@@ -2,6 +2,7 @@
 <html>
 <head>
   <title></title>
+  <link rel="stylesheet" type="text/css" href="index.css">
   <script type="text/javascript" src="https://tonejs.github.io/build/Tone.min.js"></script>
   <script type="text/javascript" src="/MidiConvert.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -9,16 +10,64 @@
 <body>
 <h1>Testing</h1>
 <button id="play-pause">Play</button>
+<button class="key-board" id="D#4">h4</button>
 
-<button class="key-board" id="C4">C1 key</button>
-<button class="key-board" id="D4">C2 key</button>
-<button class="key-board" id="E4">C3 key</button>
-<button class="key-board" id="F4">C4 key</button>
-<button class="key-board" id="G4">C5 key</button>
-<button class="key-board" id="A4">C6 key</button>
-<button class="key-board" id="B4">C7 key</button>
-<button class="key-board" id="C5">C8 key</button>
 
+
+<ul class="set">
+  <li class="white b key-board" id="F1"></li>
+  <li class="black as key-board" id="F#1"></li>
+  <li class="white a key-board" id="G1"></li>
+  <li class="black gs key-board" id="G#1"></li>
+  <li class="white g key-board" id="A1"></li>
+  <li class="black fs key-board" id="A#1"></li>
+  <li class="white f key-board" id="B1"></li>
+  <li class="white e key-board" id="C2"></li>
+  <li class="black ds key-board" id="C#2"></li>
+  <li class="white d key-board" id="D2">></li>
+  <li class="black cs key-board" id="D#2"></li>
+  <li class="white c key-board" id="E2"></li>
+
+  <li class="white q key-board" id="F2"></li>
+  <li class="black ws key-board" id="F#2"></li>
+  <li class="white w key-board" id="G2"></li>
+  <li class="black rs key-board" id="G#2"></li>
+  <li class="white r key-board" id="A2"></li>
+  <li class="black ts key-board" id="A#2"></li>
+  <li class="white t key-board" id="B2"></li>
+  <li class="white y key-board" id="C3"></li>
+  <li class="black us key-board" id="C#3"></li>
+  <li class="white u key-board" id="D3"></li>
+  <li class="black is key-board" id="D#3"></li>
+  <li class="white i key-board" id="E3"></li>
+
+  <li class="white h key-board" id="F3"></li>
+  <li class="black js key-board" id="F#3"></li>
+  <li class="white j key-board" id="G3"></li>
+  <li class="black ks key-board" id="G#3"></li>
+  <li class="white k key-board" id="A3"></li>
+  <li class="black ls key-board" id="A#3"></li>
+  <li class="white l key-board" id="B3"></li>
+  <li class="white m key-board" id="C4"></li>
+  <li class="black ns key-board" id="C#4"></li>
+  <li class="white n key-board" id="D4"></li>
+  <li class="black os key-board" id="D#4"></li>
+  <li class="white o key-board" id="E4"></li>
+
+  <li class="white p key-board" id="F4"></li>
+  <li class="black ss key-board" id="F#4"></li>
+  <li class="white s key-board" id="G4"></li>
+  <li class="black vs key-board" id="G#4"></li>
+  <li class="white v key-board" id="A4"></li>
+  <li class="black xs key-board" id="A#4"></li>
+  <li class="white x key-board" id="B4"></li>
+  <li class="white z key-board" id="C5"></li>
+  <li class="black aas key-board" id="C#5"></li>
+  <li class="white aa key-board" id="D5"></li>
+  <li class="black bbs key-board" id="D#5"></li>
+  <li class="white bb key-board" id="E5"></li>
+  <li class="white cc key-board" id="F5"></li>
+</ul>
 <script>
   synth = new Tone.PolySynth(8, Tone.Synth, {
       oscillator: {
@@ -34,11 +83,16 @@
 
   var keyState = {
     C4: false,
+    "C#4": false,
     D4: false,
+    "D#4": false,
     E4: false,
     F4: false,
+    "F#4": false,
     G4: false,
+    "G4": false,
     A4: false,
+    "A#4": false,
     B4: false,
     C5: false
   }
