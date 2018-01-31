@@ -12,43 +12,19 @@
   </script>
 
   <script src='app.js'></script>
-
-  <style>
-    body {
-      background: #333;
-      box-sizing: border-box;
-    }
-    .square {
-      flex: 1;
-      height: 20px;
-      border-right: 1px solid #bbb;
-    }
-    .square:hover {
-      cursor: pointer;
-      background-color: white;
-    }
-    .square.active {
-      background-color: yellow;
-    }
-    .square.bar {
-      border-right: 1px solid white;
-    }
-    .row {
-      display: flex;
-      margin: 0;
-      line-height: 0.6;
-      border-bottom: 1px solid #bbb;
-    }
-    .row:last-of-type, .square:last-of-type {
-      border: none;
-    }
-    #noteGrid {
-      border: 1px solid white;
-    }
-  </style>
+  <link rel="stylesheet" href="note-grid.css">
 </head>
 <body>
   <div id="noteGrid"></div>
-  <button id='clear'>Clear notes</button>
+  <div id='options'>
+    <button id='clear'>Clear</button>
+    <button id='play'>Play</button>
+    <button id="stop">Stop</button>
+    <label for="instrument">Select Instrument:</label>
+    <select name="instrument" id="instrument-selector">
+      <option value="synthesizer" selected>Synthesizer</option>
+      <option value="drums">Drum Kit</option>
+    </select>
+  </div>
 </body>
 </html>
