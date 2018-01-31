@@ -9,30 +9,112 @@ $(function() {
   //
   //
 
-  let notes = {}
+  let instrument = 'synthesizer'
 
-  function addPositionsToNotesObject(positions) {
-    positions.forEach( function(element, index) {
-      notes[element] = []
-    })
-    console.log(notes)
-  }
+  const synthesizer = new Tone.PolySynth(4, Tone.MonoSynth, {
+    oscillator: {
+        type: "sine4"
+    },
+    envelope: {
+      attack: .9,
+      decay: 1,
+      sustain: .5,
+      release: 1
+    },
+    volume: -30
+  })
 
-  let notePositions = []
+  $('#instrument-selector').on('change', () => {
+    instrument = $('#instrument-selector option:selected').attr('value')
+  })
 
-  function makePositions() {
-    for (var x = 1; x <= 16; x++) {
-        notePositions.push(`p${x}`)
-      if (x % 4 == 0) {
-        $('<div>', {'class': `square bar p${x}`})
-          .appendTo(`.row`)
-      } else {
-        $('<div>', {'class': `square p${x}`})
-          .appendTo(`.row`)
-      }
+  let synth = 'drums'
+
+  function setInstrument() {
+    switch (instrument) {
+      case 'synthesizer':
+        synth = synthesizer
+        break;
+      default:
+        break;
     }
-    addPositionsToNotesObject(notePositions)
   }
+
+  setInstrument()
+
+  let vol = new Tone.Volume(-20)
+  synthesizer.chain(vol, Tone.Master).toMaster()
+
+  let song = {
+    p1: {
+      c4: '1n',
+      c5: '4n'
+    },
+    p2: {
+      a4: '4n'
+    },
+    p3: {
+      b4: '4n'
+    },
+    p4: {
+      d4: '1n'
+    }
+  }
+
+  function scheduleTrigger(note, duration, time) {
+    function trigger(time) {
+      synth.triggerAttackRelease(note, duration, time)
+    }
+    Tone.Transport.schedule(trigger, time)
+  }
+
+  function getNotesFromSong() {
+    let positions = Object.values(song)
+    positions.forEach((notesAtPos, index) => {
+      console.log(notesAtPos)
+      for (n in notesAtPos) {
+        let note = n
+        let duration = notesAtPos[n]
+        let time = `${(index + 1)}*4n`
+        console.log(`time: ${time}; note: ${note}, duration: ${duration}`)
+        scheduleTrigger(note, duration, time)
+      }
+    });
+  }
+
+  getNotesFromSong()
+
+  // const loop = new Tone.Loop(time => {
+  //   noteValues = Object.values(notes)
+  //   noteValues.forEach( function(element, i) {
+  //     if (element) {
+  //       trigger(element, `4n * ${i + 1}`)
+  //     }
+  //   });
+  // }, '4m')
+
+  // function addPositionsToNotesObject(positions) {
+  //   positions.forEach( function(element, index) {
+  //     notes[element] = []
+  //   })
+  //   console.log(notes)
+  // }
+
+  // let notePositions = []
+
+  // function makePositions() {
+  //   for (var x = 1; x <= 16; x++) {
+  //       notePositions.push(`p${x}`)
+  //     if (x % 4 == 0) {
+  //       $('<div>', {'class': `square bar p${x}`})
+  //         .appendTo(`.row`)
+  //     } else {
+  //       $('<div>', {'class': `square p${x}`})
+  //         .appendTo(`.row`)
+  //     }
+  //   }
+  //   addPositionsToNotesObject(notePositions)
+  // }
 
   function makeNotes(minOctave, maxOctave) {
     let notes = ['B', 'A', 'G', 'F', 'E', 'D', 'C']
@@ -46,7 +128,7 @@ $(function() {
           .appendTo(`.octave.${oct}`)
       });
     }
-    makePositions()
+    // makePositions()
   }
 
   makeNotes(2, 8)
@@ -101,17 +183,12 @@ $(function() {
 
       let noteClass = $(sq).parent().attr('class')
       let note = /row\s(\w\d+)/.exec(noteClass)[1]
-      console.log(position)
-      instrument.triggerAttackRelease(note, '4n', `${Tone.now()} `)
+      synth.triggerAttackRelease(note, '4n', `${Tone.now()} `)
       setNote(note, position)
     }
   }
 
   noteSelection()
-
-  function trigger(note, time) {
-    instrument.triggerAttackRelease(note, '4n', `${Tone.now()} + ${time} + 0.2`)
-  }
 
   function setNote(note, pos) {
     console.log(notes[pos])
@@ -136,47 +213,14 @@ $(function() {
   })
 
   $('#play').on('click', () => {
-    loop.start()
     Tone.Transport.start('+0.1')
   })
 
   $('#stop').on('click', () => {
-    loop.stop()
     Tone.Transport.stop()
   })
-
-  const loop = new Tone.Loop(time => {
-    noteValues = Object.values(notes)
-    noteValues.forEach( function(element, i) {
-      if (element) {
-        trigger(element, `4n * ${i + 1}`)
-      }
-    });
-  }, '4m')
 
   $('#measures').on('change', () => {
 
   })
-
-  let instrument = 'synthesizer'
-
-  $('#instrument-selector').on('change', () => {
-    instrument = $('#instrument-selector option:selected').attr('value')
-  })
-
-  function setInstrument() {
-
-  }
-
-  const synthesizer = new Tone.PolySynth(4, Tone.MonoSynth, {
-    oscillator: {
-        type: "sine4"
-    },
-    envelope: {
-        attack: .9,
-        decay: 1,
-        sustain: .5,
-        release: 1
-      }
-  }).toMaster();
 })
