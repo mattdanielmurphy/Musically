@@ -4,23 +4,36 @@ body {
   box-sizing: border-box;
   color: white;
 }
-.square {
+.position {
   flex: 1;
   border-right: 1px solid #475460;
+  border-left: 1px solid #475460;
   transition: .15s ease;
 }
-.square:hover {
+.position.highlight {
+  background-color: #fff;
+}
+.position:hover {
   transition: 0s;
   cursor: pointer;
   background-color: #475460;
 }
-.square.active {
+.position.note {
   background-color: #4a8ed4;
+  border: 1px solid white;
+  border-right: 1px solid #4a8ed4;
+  border-left: 1px solid #4a8ed4;
 }
-.square.bar {
+.position.note.start {
+  border-left: 1px solid white;
+}
+.position.note.end {
+  border-right: 1px solid white;
+}
+.position.bar {
   border-right: 1px solid #617280;
 }
-.row {
+.noteRow {
   display: flex;
   margin: 0;
   border-bottom: 1px solid #475460;
@@ -45,8 +58,11 @@ body {
 .octave {
   border-bottom: 1px solid #617280;
 }
-.octave:last-of-type, .row:last-of-type, .square:last-of-type {
+.octave:last-of-type, .noteRow:last-of-type {
   border: none;
+}
+.position:last-of-type {
+  border-right: 1px solid #36434f;
 }
 #noteGrid {
   position: absolute;
@@ -83,4 +99,17 @@ button#clear {
 }
 button#clear:hover {
   background: rgba(255,0,0,0.35);
+}
+button#play {
+  transition: .5s ease;
+}
+button#play.playing {
+  background: #498645;
+  animation: 1.4s ease infinite blink;
+}
+@keyframes blink {
+  0% {background: #465767}
+  45% {background: #498645}
+  65% {background: #498645}
+  100% {background: #465767}
 }
