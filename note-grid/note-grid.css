@@ -8,15 +8,17 @@ body {
   flex: 1;
   border-right: 1px solid #475460;
   border-left: 1px solid #475460;
-  transition: .15s ease;
-}
-.position.highlight {
-  background-color: #fff;
+  background-color: #36434f;
+  transition: .2s ease;
 }
 .position:hover {
   transition: 0s;
   cursor: pointer;
   background-color: #475460;
+}
+.position.highlight {
+  /*background-color: rgba(74, 142, 214,0.05);*/
+  background-color: #365350;
 }
 .position.note {
   background-color: #4a8ed4;

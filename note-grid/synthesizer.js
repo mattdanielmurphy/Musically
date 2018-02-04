@@ -86,31 +86,32 @@ makeNoteGrid()
 // scroll down note grid to hide rarely used upper range
 $('#noteGrid').scrollTop(550)
 
-scheduler = {
-  triggerNote: (note, duration, time) => {
-    Tone.Transport.schedule((time) => {
+function triggerNote(note, duration, time, position = null) {
+  Tone.Transport.schedule((time) => {
+    if (position) {
+      Tone.Draw.schedule(() => {
+        $position = $(`.p${position}`)
+        $('.position').removeClass('highlight')
+        $position.addClass('highlight')
+      }, time)
+    } else {
       synth.triggerAttackRelease(note, duration, time)
-
-    }, time)
-  },
-  triggerHighlight: () => {
-
-  }
-}
-
-for (let n = 1; n <= gridBeats; n++) {
-  scheduler.(`${n} * ${baseNote}`)
+    }
+  }, time)
 }
 
 function scheduleNotes() {
   Tone.Transport.cancel()
+  for (let n = 1; n <= gridBeats; n++) {
+    triggerNote('', baseNote, `${n} * ${baseNote}`, n)
+  }
   let positions = Object.values(song)
   positions.forEach((notesAtPos, index) => {
     for (n in notesAtPos) {
       let note = n
       let duration = notesAtPos[n]
       let time = `${(index + 1)} * ${baseNote}`
-      scheduler.triggerNote(note, duration, time)
+      triggerNote(note, duration, time)
     }
   });
 }
@@ -258,21 +259,19 @@ Tone.Transport.loop = true
 $('#clear').on('click', () => {
   $('.position').removeClass('note start end')
   initSongPositions(notePositions)
-  Tone.Transport.cancel()
+  scheduleNotes()
 })
 
 $('#play').on('click', () => {
-  Tone.Transport.start('+0.1')
+  scheduleNotes()
+  Tone.Transport.start()
   $('#play').addClass('playing')
 })
 
 $('#stop').on('click', () => {
   Tone.Transport.stop()
+  $('.position').removeClass('highlight')
   $('#play').removeClass('playing')
-})
-
-$('#measures').on('change', () => {
-
 })
 
 })
