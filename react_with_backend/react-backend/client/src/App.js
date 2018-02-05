@@ -1,0 +1,64 @@
+import React from 'react';
+
+import NavBar from './NavBar.js';
+
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import Home from './routes/Home';
+import PlayInstrument from './routes/PlayInstrument';
+import ComposeGrid from './routes/ComposeGrid';
+import SignIn from './routes/SignIn';
+import Register from './routes/Register';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      systemMusicFiles: [],
+      users: [],
+      currentUser: null,
+      login: false,
+      register: false
+    }
+  }
+
+  componentDidMount(){
+    fetch('/systemMusicFiles')
+    .then(res => res.json())
+    .then(systemMusicFiles => this.setState({systemMusicFiles: systemMusicFiles}))
+    fetch('/users')
+    .then(res => res.json())
+    .then(users => this.setState({ users: users}))
+
+
+    // .then(console.log('users :', this.state.users))
+
+    // fetch('/login/:id')
+    // handle login
+    // set currentUser if logged in
+  }
+
+  updateCurrentUser = (data) => {
+    this.setState({currentUser: data})
+  }
+
+  render() {
+    return (
+      <BrowserRouter>
+        <div>
+          <NavBar currentUsers={this.state.currentUsers} />
+          <Switch>
+            <Route path='/' exact render={ ({match, history, location}) => <Home users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} /> } />
+            <Route path='/instrument' exact render={() => <PlayInstrument />} />
+            <Route path='/composeGrid' exact render={()=><ComposeGrid />} />
+            <Route path='/signIn' exact render={()=> <SignIn updateCurrentUser={this.updateCurrentUser} />} />
+            <Route path='/register' exact render={()=> <Register />} />
+          </Switch>
+        </div>
+      </BrowserRouter>
+    );
+  }
+}
+export default App;
+

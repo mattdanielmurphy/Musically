@@ -1,0 +1,14 @@
+.App {
+  text-align: center;
+}
+
+.navbar {
+  background: #763A7A;
+  border-bottom: 1px solid black;
+  height: 75px;
+  left: 0;
+  padding: 0 10px;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
