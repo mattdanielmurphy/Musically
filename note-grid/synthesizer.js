@@ -42,20 +42,9 @@ const sampler = new Tone.Sampler({
 
 sampler.volume.value = -5
 
-// const snare = new Tone.Player({
-//   url: 'samples/snare.aif'
-// }).toMaster()
-
-// const samples = {
-//   snare: newSample('snare')
-//   clap: newSample('clap')
-//   crash: newSample('crash')
-//   openHihat: newSample('openHihat')
-//   closedHihat: newSample('closedHihat')
-// }
-
 $('#instrument-selector').on('change', () => {
   selectedInstrument = $('#instrument-selector option:selected').attr('value')
+  setInstrument()
 })
 
 let inst
