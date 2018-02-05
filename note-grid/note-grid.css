@@ -8,20 +8,19 @@ body {
   flex: 1;
   border-right: 1px solid #475460;
   border-left: 1px solid #475460;
-  background-color: #36434f;
+  background: #36434f;
   transition: .2s ease;
 }
 .position:hover {
   transition: 0s;
   cursor: pointer;
-  background-color: #475460;
+  background: #3b4c5e;
 }
 .position.highlight {
-  /*background-color: rgba(74, 142, 214,0.05);*/
-  background-color: #365350;
+  background: #303c47;
 }
 .position.note {
-  background-color: #4a8ed4;
+  background: #4a8ed4;
   border: 1px solid white;
   border-right: 1px solid #4a8ed4;
   border-left: 1px solid #4a8ed4;
@@ -109,6 +108,17 @@ button#play.playing {
   background: #498645;
   animation: 1.4s ease infinite blink;
 }
+#envelope {
+  text-align: center;
+}
+#envelope input[type='number'] {
+  width: 3em;
+  margin-right: 2em;
+  background: #465767;
+  color: white;
+  padding: .2em 0 .2em 1em;
+}
+
 @keyframes blink {
   0% {background: #465767}
   45% {background: #498645}

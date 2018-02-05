@@ -1,11 +1,11 @@
 $(function() {
 
 // default instrument is synthesizer
-let instrument = 'synthesizer'
+let selectedInstrument = $('#instrument-selector option:selected').attr('value')
 
-let baseNote = '4n'
+let baseNote = '16n'
 
-let gridBeats = 16
+let gridBeats = 4
 
 let octaveRange = {
   min: 0,
@@ -16,12 +16,12 @@ let notePositions = []
 
 // SET UP SYNTHESIZER
 
-const synthesizer = new Tone.PolySynth(4, Tone.MonoSynth, {
+let synthesizer = new Tone.PolySynth(4, Tone.MonoSynth, {
   oscillator: {
-      type: "sine4"
+    type: "sine4"
   },
   envelope: {
-    attack: .2,
+    attack: 0.2,
     decay: .5,
     sustain: .5,
     release: 1
@@ -29,19 +29,46 @@ const synthesizer = new Tone.PolySynth(4, Tone.MonoSynth, {
   volume: -30
 }).toMaster()
 
+const drum = new Tone.MembraneSynth().toMaster()
+
+const sampler = new Tone.Sampler({
+  'C4': 'samples/kick.aif',
+  'D4': 'samples/snare.aif',
+  'E4': 'samples/clap.aif',
+  'F4': 'samples/closedHihat.aif',
+  'G4': 'samples/openHihat.aif',
+  'A4': 'samples/crash.aif'
+}).toMaster()
+
+sampler.volume.value = -5
+
+// const snare = new Tone.Player({
+//   url: 'samples/snare.aif'
+// }).toMaster()
+
+// const samples = {
+//   snare: newSample('snare')
+//   clap: newSample('clap')
+//   crash: newSample('crash')
+//   openHihat: newSample('openHihat')
+//   closedHihat: newSample('closedHihat')
+// }
+
 $('#instrument-selector').on('change', () => {
-  instrument = $('#instrument-selector option:selected').attr('value')
+  selectedInstrument = $('#instrument-selector option:selected').attr('value')
 })
 
-let synth = synthesizer
+let inst
 
 function setInstrument() {
-  switch (instrument) {
+  switch (selectedInstrument) {
     case 'synthesizer':
-      synth = synthesizer
+      inst = synthesizer
       break;
   }
 }
+
+setInstrument()
 
 let song = {}
 
@@ -58,6 +85,12 @@ function makeNoteGrid() {
 
     // append note rows with label for each note
     noteSequence.forEach( function(note, index) {
+      if (selectedInstrument == 'synthesizer') {
+        $(`<div class='noteRow ${note}${oct}'>
+            <div class="noteName">${note}${oct}</div>
+          </div>`)
+          .appendTo(`.octave.${oct}`)
+      }
       $(`<div class='noteRow ${note}${oct}'>
           <div class="noteName">${note}${oct}</div>
         </div>`)
@@ -86,6 +119,16 @@ makeNoteGrid()
 // scroll down note grid to hide rarely used upper range
 $('#noteGrid').scrollTop(550)
 
+function triggerDrumNote(note, time) {
+  sampleNotes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4']
+  if (sampleNotes.includes(note))
+    sampler.triggerAttackRelease(note, baseNote)
+    // snare.triggerAttack(note, baseNote)
+  else {
+    drum.triggerAttackRelease(note, baseNote, time)
+  }
+}
+
 function triggerNote(note, duration, time, position = null) {
   Tone.Transport.schedule((time) => {
     if (position) {
@@ -95,7 +138,11 @@ function triggerNote(note, duration, time, position = null) {
         $position.addClass('highlight')
       }, time)
     } else {
-      synth.triggerAttackRelease(note, duration, time)
+      if (selectedInstrument === 'synthesizer') {
+        inst.triggerAttackRelease(note, duration, time)
+      } else {
+        triggerDrumNote(note, time)
+      }
     }
   }, time)
 }
@@ -114,6 +161,7 @@ function scheduleNotes() {
       triggerNote(note, duration, time)
     }
   });
+  console.log(song)
 }
 
 scheduleNotes()
@@ -148,58 +196,52 @@ function getValueFromParentClass(target, value) {
 
 
 $('.position').mousedown( e => {
-  if ( $(e.target).hasClass('note') ) {
-    changeNote(e)
+  let posClicked = e.target
+  let noteValue = getValueFromParentClass(posClicked, 'noteRow')
+  if ( $(posClicked).hasClass('note') ) {
+    deleteNote(posClicked, noteValue)
   } else {
-    startNote(e)
+    startNote(posClicked, noteValue)
   }
 })
 
-function startNote(e) {
-  let noteValue = getValueFromParentClass(e.target, 'noteRow')
-  let note = e.target
-  let duration = '8n'
-  let time = Tone.now()
-
-  // play note
-  synth.triggerAttackRelease(noteValue, duration, time)
-
+function startNote(noteStart, noteValue) {
   // set class
-  $(note).addClass('note start')
-  trackNoteDuration(e, noteValue)
-}
+  $(noteStart).addClass('note start')
 
-function changeNote(e) {
-  note = e.target
-  deleteNote(note, e)
-}
-
-function trackNoteDuration(e, noteValue) {
-  let noteStart = e.target
-  let noteStartPos = getValueFromClass(e.target, 'position')
-  let sameRow = true
-  let holding = true
-  let noteEndPos = noteStartPos
-
-  function endTrackNoteDuration(e) {
-    holding = false
-    noteEndPos = getValueFromClass(e.target, 'position')
-    let noteDuration = `${(noteEndPos - noteStartPos) + 1}*${baseNote}`
-    $(noteStart).addClass(`dur${noteDuration}`)
-    // if (noteDuration == 1)
-    $(`.${noteValue} > .position.p${noteEndPos}`).addClass('end')
-    saveNote(noteValue, noteStartPos, noteDuration)
+  if (selectedInstrument === 'synthesizer') {
+    // play feedback note
+    inst.triggerAttackRelease(noteValue, '8n', Tone.now())
+    trackNoteDuration(noteStart, noteValue)
+  } else {
+    // play feedback note
+    triggerDrumNote(noteValue, Tone.now())
+    // inst.triggerAttackRelease(noteValue, 0.1, Tone.now())
+    noteEnd = noteStart
+    endTrackNoteDuration(noteStart, noteEnd, noteValue)
   }
+}
+
+function endTrackNoteDuration(noteStart, noteEnd, noteValue) {
+  let endPos = getValueFromClass(noteEnd, 'position')
+  startPos = getValueFromClass(noteStart, 'position')
+  let duration = `${(endPos - startPos) + 1}*${baseNote}`
+  $(noteStart).addClass(`dur${duration}`)
+  $(`.${noteValue} > .position.p${endPos}`).addClass('end')
+  saveNote(startPos, noteValue, duration)
+}
+
+function trackNoteDuration(noteStart, noteValue) {
+  let startPos = getValueFromClass(noteStart, 'position')
+  let mouseDown = true
 
   $('.position')
     .mouseover( e => {
-      // check if same row
-      if (noteValue !== getValueFromParentClass(e.target, 'noteRow')) {
-        sameRow = false
-      } else if (holding) {
+      if (mouseDown) {
         currentPosition = getValueFromClass(e.target, 'position')
+        // set class to selected positions
         for (let i = 1; i < currentPosition; i++) {
-          if (i >= noteStartPos) {
+          if (i >= startPos) {
             $(`.${noteValue} > .position.p${i + 1}`).addClass('note').removeClass('end')
             if (i + 1 == currentPosition) {
               $(`.${noteValue} > .position.p${i + 1}`).addClass('end')
@@ -209,31 +251,43 @@ function trackNoteDuration(e, noteValue) {
       }
     })
     .mouseup( e => {
-      endTrackNoteDuration(e)
+      mouseDown = false
+      noteEnd = e.target
+      endTrackNoteDuration(noteStart, noteEnd, noteValue)
     })
 }
 
-function saveNote(noteValue, noteStartPos, noteDuration) {
-  let notePosition = `p${noteStartPos}`
+function saveNote(startPos, noteValue, duration) {
+  startPos = `p${startPos}`
+
+  // clear mouse bindings
   $('.position').off('mouseover mouseup')
-  song[notePosition][noteValue] = noteDuration
+
+  // save note to song object
+  song[startPos][noteValue] = duration
+
+  // refresh transport
   scheduleNotes()
 }
 
-function deleteNote(note, e) {
-  let noteValue = getValueFromParentClass(note, 'noteRow')
-  let noteStartPos = getValueFromClass(note, 'position')
-  let noteEndPos = getValueFromClass(note, 'position')
+function deleteNote(posClicked, noteValue) {
+  posClicked = getValueFromClass(posClicked, 'position')
+  startPos = null
+
   // find start position by looping backward
-  for (let i = noteStartPos; i > 0; i--) {
-    noteStartPos = $(`.${noteValue} > .position.p${i}`)
-    if (noteStartPos.hasClass('start')) {
-      noteStartPos = i
+  for (let i = posClicked; i > 0; i--) {
+    $currentPos = $(`.${noteValue} > .position.p${i}`)
+    if ($currentPos.hasClass('start')) {
+      startPosClass = $currentPos.attr('class')
+      durationString = /dur(\d+\*\d+n)/.exec(startPosClass)[1]
+      $currentPos.removeClass(`start ${durationString}`)
+      startPos = i
       break
     }
   }
+
   // remove note classes by looping forward until end position
-  for (let i = noteStartPos; i <= gridBeats; i++) {
+  for (let i = startPos; i <= gridBeats; i++) {
     let currentPos = $(`.${noteValue} > .position.p${i}`)
     currentPos.removeClass('note')
     if (currentPos.hasClass('end')) {
@@ -241,16 +295,14 @@ function deleteNote(note, e) {
       break
     }
   }
-  noteStartPosName = `p${noteStartPos}`
 
-  // for (let i = noteStartPos; i <= noteEndPos; i++) {
-  //   $(`.${noteValue} > .position.p${i}`).removeClass('note')
-  // }
-  delete song[noteStartPosName][noteValue]
-  $(note).removeClass('note start end')
+  startPos = `p${startPos}`
+
+  delete song[startPos][noteValue]
+  scheduleNotes()
 }
 
-Tone.Transport.loopEnd = '4m +0.1'
+Tone.Transport.loopEnd = `(${gridBeats} * ${baseNote})+0.01`
 Tone.Transport.loop = true
 
 
