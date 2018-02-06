@@ -6,6 +6,11 @@ class NavBar extends Component {
     super(props);
   }
 
+  handleLogout = props => {
+    this.props.updateCurrentUser(null);
+    this.props.history.push('/');
+  }
+
   navbarDisplay = props => {
     if(this.props.currentUser){
       return(
@@ -17,10 +22,10 @@ class NavBar extends Component {
                 <a className='nav-link' href='/'>Home</a>
               </li>
               <li className='nav-item'>
-                <p>Logged in as {this.props.currentUser}</p>
+                <p>Logged in as {this.props.currentUser && this.props.currentUser.username}</p>
               </li>
               <li className='nav-item'>
-                <a className='nav-link' href='/'>Logout</a>
+                <a className='nav-link' onClick={this.handleLogout}>Logout</a>
               </li>
             </ul>
           </div>

@@ -40,19 +40,19 @@ class App extends React.Component {
   }
 
   updateCurrentUser = (data) => {
-    this.setState({currentUser: data})
+    this.setState({currentUser: data })
   }
 
   render() {
     return (
       <BrowserRouter>
         <div>
-          <NavBar currentUsers={this.state.currentUsers} />
+          <NavBar currentUser={this.state.currentUser} updateCurrentUser={this.updateCurrentUser} />
           <Switch>
             <Route path='/' exact render={ ({match, history, location}) => <Home users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} /> } />
             <Route path='/instrument' exact render={() => <PlayInstrument />} />
-            <Route path='/composeGrid' exact render={()=><ComposeGrid />} />
-            <Route path='/signIn' exact render={()=> <SignIn updateCurrentUser={this.updateCurrentUser} />} />
+            <Route path='/composegrid' exact render={()=><ComposeGrid />} />
+            <Route path='/signin' exact render={(props)=> <SignIn {...props} updateCurrentUser={this.updateCurrentUser} />} />
             <Route path='/register' exact render={()=> <Register />} />
           </Switch>
         </div>

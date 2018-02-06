@@ -27,10 +27,10 @@ router.get('/', function(req, res, next) {
 
 router.post('/register', function(req, res, next) {
   let { email, password, username } = req.body;
-  DataHelpers.createNewUser(req.body.email, req.body.password, req.body.username)
+  DataHelpers.createNewUser(email, password, username).then()
 })
 
-router.post('/users/login', function(req, res, next) {
+router.post('/login', function(req, res, next) {
   let { email, password } = req.body;
 
   if (email && password){
