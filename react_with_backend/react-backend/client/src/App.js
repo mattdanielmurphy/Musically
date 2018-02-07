@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import NavBar from './NavBar.js';
 
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import './App.css'
 
 import Home from './routes/Home';
 import PlayInstrument from './routes/PlayInstrument';
