@@ -17,11 +17,6 @@ module.exports = function dataQueries(knex) {
     getAllUsers() {
       return knex.select('*').from('users')
     },
-    getUserByLogin(email, password) {
-      return knex(users)
-        .select()
-        .where('email', email)
-    },
     createNewUser(email, password, username){
       return knex('users')
         .insert({
@@ -38,6 +33,13 @@ module.exports = function dataQueries(knex) {
           "email": email,
           "password": password
         });
+    },
+    getUserByName(username){
+      return knex('users')
+        .select()
+        .where({
+          'username': username
+        })
     }
   }
 }

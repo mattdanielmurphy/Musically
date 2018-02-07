@@ -16,18 +16,26 @@ var DataHelpers = require('../lib/util/data_helpers.js')(knex);
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  DataHelpers.getAllUsers().
-    then((users) => {
-      console.log(users)
-      res.json(users)
-    })
+  // console.log('session:', req.session)
+  // let user = DataHelpers.getUserByName('Chun')
+  // if(user){
+  //   res.json(user)
+  // } else {
+    DataHelpers.getAllUsers()
+      .then((users) => {
+        console.log(users)
+        res.json(users)
+      })
+  // }
 });
 
 /* Post a new user session */
 
 router.post('/register', function(req, res, next) {
   let { email, password, username } = req.body;
-  DataHelpers.createNewUser(email, password, username).then()
+  DataHelpers.createNewUser(email, password, username).then((newone) => {
+    res.json(newone)
+  })
 })
 
 router.post('/login', function(req, res, next) {
@@ -38,6 +46,7 @@ router.post('/login', function(req, res, next) {
       if(!result[0]){
         res.status(400).send('Could not find user')
       } else {
+        // req.session.userId = result[0].id;
         res.json(result[0])
       }
     })
