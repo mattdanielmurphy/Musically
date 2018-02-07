@@ -14,9 +14,9 @@ exports.seed = function(knex, Promise) {
       ]);
     }).then(function(){
       return knex('music_collections').insert([
-        {user_id: 2, name: 'Beethoven'},
-        {user_id: 3, name: 'EscapeRoom'},
-        {user_id: 1, name: 'Mozart'}
+        {user_id: 2, name: 'Beethoven', description: 'A collection of tracks from Beethoven'},
+        {user_id: 3, name: 'EscapeRoom', description: 'A collection of tracks from EscapeRoom Game theme music'},
+        {user_id: 1, name: 'Mozart', description: 'A beautiful collection of tracks from Mozart\'s masterpiece'}
       ])
 
     }).then(function(){

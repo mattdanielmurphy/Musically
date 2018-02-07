@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
       table.foreign('user_id').references('users.id').onDelete('CASCADE');
     }),
     knex.schema.alterTable('tracks', (table) => {
-      table.foreign('music_collection_id').references('tracks.id').onDelete('CASCADE');
+      table.foreign('music_collection_id').references('music_collections.id').onDelete('CASCADE');
       table.foreign('user_id').references('users.id').onDelete('CASCADE')
     })
   ]);

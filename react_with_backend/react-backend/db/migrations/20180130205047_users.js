@@ -8,10 +8,11 @@ exports.up = function(knex, Promise) {
         table.string('password')
       }),
       knex.schema.createTable('music_collections', (table) => {
+        table.increments('id')
         table.integer('user_id');
-        table.integer('id');
         table.string('name');
-        table.primary('user_id')
+        table.string('description');
+        table.unique('user_id')
       }),
       knex.schema.createTable('tracks', (table) => {
         table.string('name');
