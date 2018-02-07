@@ -1,10 +1,5 @@
-<<<<<<< Updated upstream
-import React, { Component } from 'react';
-=======
 import React, { Component } from 'react'
 import './navbar.css'
->>>>>>> Stashed changes
-
 
 class NavBar extends Component {
   constructor(props){
