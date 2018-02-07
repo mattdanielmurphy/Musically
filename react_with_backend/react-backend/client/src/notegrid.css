@@ -1,0 +1,127 @@
+body {
+  background: #22272c;
+  font-family: 'Open Sans', sans-serif;
+  box-sizing: border-box;
+  color: white;
+}
+.pos {
+  flex: 1;
+  border-right: 1px solid #475460;
+  border-left: 1px solid #475460;
+  background: #36434f;
+  transition: .2s ease;
+}
+.pos:hover {
+  transition: 0s;
+  cursor: pointer;
+  background: #3b4c5e;
+}
+.pos.highlight {
+  background: #303c47;
+}
+.pos.note {
+  background: #4a8ed4;
+  /*border: 1px solid white;*/
+  border-right: 1px solid #4a8ed4;
+  border-left: 1px solid #4a8ed4;
+}
+.pos.note.start {
+  border-left: 1px solid white;
+}
+.pos.note.end {
+  border-right: 1px solid white;
+}
+.pos.barEnd {
+  border-right: 1px solid #617280;
+}
+.noteRow {
+  display: flex;
+  margin: 0;
+  border-bottom: 1px solid #475460;
+}
+.noteName {
+  color: rgba(255,255,255,0.5);
+  font-size: .7em;
+  line-height: 1.8;
+  border-right: none;
+  font-weight: bold;
+  text-align: center;
+  display: block;
+  position: relative;
+  width: 2.5em;
+  background: rgba(0,0,0,0.2);
+  padding: .3em;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+.octave {
+  border-bottom: 1px solid #617280;
+}
+.octave:last-of-type, .noteRow:last-of-type {
+  border: none;
+}
+.pos:last-of-type {
+  border-right: 1px solid #36434f;
+}
+#noteGrid {
+  position: absolute;
+  top: 6em; left: 0; right: 0;
+  bottom: 6em;
+  overflow-y: scroll;
+  background: #36434f;
+  border: 1em solid #36434f;
+  border-right: none; border-left: none;
+}
+#options {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 5em;
+  background: rgba(0,0,0,0.3);
+  padding: .5em;
+}
+button {
+  background: #465767;
+  color: white;
+  border: none;
+  padding: 1.4em 1.8em 1.5em 1.8em;
+  margin-right: .5em;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  transition: .15s ease;
+}
+button:hover {
+  background: #5a7287;
+  cursor: pointer;
+}
+button#clear {
+  background: rgba(255,0,0,0.25);
+}
+button#clear:hover {
+  background: rgba(255,0,0,0.35);
+}
+button#play {
+  transition: .5s ease;
+}
+button#play.playing {
+  background: #498645;
+  animation: 1.4s ease infinite blink;
+}
+#envelope {
+  text-align: center;
+}
+#envelope input[type='number'] {
+  width: 3em;
+  margin-right: 2em;
+  background: #465767;
+  color: white;
+  padding: .2em 0 .2em 1em;
+}
+
+@keyframes blink {
+  0% {background: #465767}
+  45% {background: #498645}
+  65% {background: #498645}
+  100% {background: #465767}
+}

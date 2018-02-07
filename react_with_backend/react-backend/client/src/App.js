@@ -1,9 +1,16 @@
 import React from 'react';
 
+<<<<<<< Updated upstream
 import NavBar from './NavBar.js';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+=======
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import NavBar from './NavBar.js';
+
+import './app.css'
+>>>>>>> Stashed changes
 import Home from './routes/Home';
 import PlayInstrument from './routes/PlayInstrument';
 import ComposeGrid from './routes/ComposeGrid';

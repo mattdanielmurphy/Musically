@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+<<<<<<< Updated upstream
+=======
+    "classnames": "^2.2.5",
+>>>>>>> Stashed changes
     "jsmidgen": "^0.1.5",
     "midi-file-parser": "^1.0.0",
     "midiconvert": "^0.4.2",
