@@ -1,8 +1,11 @@
 body {
+  margin-top: 75px;
   background: #22272c;
   font-family: 'Open Sans', sans-serif;
   box-sizing: border-box;
   color: white;
+  position: absolute;
+  top: 0; bottom: 0; right: 0; left: 0;
 }
 .pos {
   flex: 1;
@@ -66,9 +69,6 @@ body {
   border-right: 1px solid #36434f;
 }
 #noteGrid {
-  position: absolute;
-  top: 6em; left: 0; right: 0;
-  bottom: 6em;
   overflow-y: scroll;
   background: #36434f;
   border: 1em solid #36434f;

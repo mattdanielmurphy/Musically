@@ -1,12 +1,12 @@
 import React from 'react';
-import PlayPiano from '../PlayPiano.js'
+import PlayPaino from '../PlayPaino.js'
 
 class PlayInstrument extends React.Component {
   render() {
     return (
       <div>
         <footer className='playInstrument'>
-          <PlayPiano />
+          <PlayPaino />
         </footer>
       </div>
     )
