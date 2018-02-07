@@ -40,6 +40,20 @@ module.exports = function dataQueries(knex) {
         .where({
           'username': username
         })
+    },
+    getMusicByUserId(id){
+      return knex('music_collections')
+        .select()
+        .where({
+          'user_id': id
+        })
+    },
+    getTracksByMusicCollectionId(id){
+      return knex('tracks')
+        .select()
+        .where({
+          'music_collections_id': id
+        });
     }
   }
 }

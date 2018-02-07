@@ -55,5 +55,11 @@ router.post('/login', function(req, res, next) {
   }
 })
 
+router.get('/usermusic/:id', function(req, res, next){
+  DataHelpers.getMusicByUserId(req.params.id).then((usermusic) => {
+    res.json(usermusic)
+  })
+})
+
 
 module.exports = router;

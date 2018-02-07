@@ -9,6 +9,7 @@ import PlayInstrument from './routes/PlayInstrument';
 import ComposeGrid from './routes/ComposeGrid';
 import SignIn from './routes/SignIn';
 import Register from './routes/Register';
+
 // import cookie from 'react-cookies';
 
 class App extends React.Component {
@@ -33,7 +34,8 @@ class App extends React.Component {
     .then(systemMusicFiles => this.setState({systemMusicFiles: systemMusicFiles}))
     fetch('/users')
     .then(res => res.json())
-    .then(users => this.setState({ users: users}))
+    .then(users => this.setState({ users: users }))
+
 
 
     // .then(console.log('users :', this.state.users))
@@ -78,7 +80,7 @@ class App extends React.Component {
         <div>
           <NavBar currentUser={this.state.currentUser} updateCurrentUser={this.updateCurrentUser} onLogout={this.onLogout} />
           <Switch>
-            <Route path='/' exact render={ ({match, history, location}) => <Home users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} /> } />
+            <Route path='/' exact render={ ({match, history, location}) => <Home users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} currentUser={this.state.currentUser}/> } />
             <Route path='/instrument' exact render={() => <PlayInstrument />} />
             <Route path='/composegrid' exact render={()=><ComposeGrid />} />
           </Switch>

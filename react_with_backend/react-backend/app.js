@@ -11,6 +11,7 @@ var users = require('./routes/users');
 var systemMusicFiles = require('./routes/systemMusicFiles')
 var result = require('./routes/users');
 var newone = require('./routes/users')
+var usermusic = require('./routes/users')
 var cookieSession = require('cookie-session');
 
 var app = express();
@@ -36,8 +37,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/systemMusicFiles', systemMusicFiles);
-app.use('/users/login', result);
-app.use('/users/register', newone);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
