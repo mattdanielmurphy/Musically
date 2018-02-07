@@ -13,7 +13,7 @@ class ComposeGrid extends React.Component {
       baseNote: '4n',
       gridBeats: 4,
       gridBars: 4,
-      octaveRange: { min: 4, max: 5 },
+      octaveRange: { min: 2, max: 4 },
       selectedInstrument: 'synthesizer',
       song: [],
       synth: new Tone.PolySynth().toMaster(),
@@ -68,7 +68,7 @@ class ComposeGrid extends React.Component {
     let grid = []
     let gridRows = []
     let octaveRange = this.state.octaveRange
-    for (let octave = octaveRange.min; octave <= octaveRange.max; octave++) {
+    for (let octave = octaveRange.max; octave >= octaveRange.min; octave--) {
       this.state.noteSequence.forEach( (note, index) => {
         grid.push(
           <div className='noteRow' noteValue={`${note}${octave}`}>
