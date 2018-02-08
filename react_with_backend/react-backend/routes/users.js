@@ -61,5 +61,12 @@ router.get('/usermusic/:id', function(req, res, next){
   })
 })
 
+router.get('/tracks/:id', function(req, res, next){
+  DataHelpers.getTracksByMusicCollectionId(req.params.id).then((tracks) =>{
+    console.log('tracks:',tracks)
+    res.json(tracks)
+  })
+})
+
 
 module.exports = router;

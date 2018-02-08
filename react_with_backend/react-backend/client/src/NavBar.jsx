@@ -1,5 +1,7 @@
+
 import React, { Component } from 'react'
 import './navbar.css'
+
 
 class NavBar extends Component {
   constructor(props){
@@ -34,9 +36,11 @@ class NavBar extends Component {
     } else {
       return(
         <nav className='navbar navbar-toggleable-md navbar-light bg-faded' >
+
           <a href='/' className='navbar-brand'>
             <img src='musically-logo.svg' height='50' width='80'/>
           </a>
+
           <div className='collapse navbar-collapse' id='navbarNav'>
             <ul className='navbar-nav'>
               <li className='nav-item'>

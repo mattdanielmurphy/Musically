@@ -8,9 +8,16 @@ class Home extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      userCollection: []
+
+      userCollection: [],
+      collectionId: null
     };
   }
+
+  setCollectionId(id){
+    this.props.setUpCollectionId(id)
+  }
+
 
   componentDidMount(){
     if(this.props.currentUser){
@@ -45,7 +52,9 @@ class Home extends React.Component {
         <div className='personalProfile'>
           <h1>Welcome, {this.props.currentUser.username}. This your Music Space</h1>
           {this.state.userCollection.map((item) => {
-            return <SingleCollection key={item.id} item={item} />
+
+            return <SingleCollection key={item.id} item={item} setCollectionId={this.setCollectionId.bind(this)} />
+
           })}
           <footer>
             <Link to="/instrument">instrument</Link>
@@ -58,3 +67,5 @@ class Home extends React.Component {
   }
 }
 export default Home;
+
+

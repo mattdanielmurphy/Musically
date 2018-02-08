@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Tone from 'tone'
@@ -231,6 +232,7 @@ class ComposeGrid extends React.Component {
             <input id='release' type="number" value='1.0' step='0.1'>
           </div>*/}
         </div>
+
         <Link to='/'>Back to Home</Link>
       </div>
     )

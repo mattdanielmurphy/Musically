@@ -52,8 +52,8 @@ module.exports = function dataQueries(knex) {
       return knex('tracks')
         .select()
         .where({
-          'music_collections_id': id
-        });
+          'music_collection_id': id
+        })
     }
   }
 }
