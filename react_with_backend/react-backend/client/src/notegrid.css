@@ -1,11 +1,8 @@
 body {
-  margin-top: 75px;
   background: #22272c;
   font-family: 'Open Sans', sans-serif;
   box-sizing: border-box;
   color: white;
-  position: absolute;
-  top: 0; bottom: 0; right: 0; left: 0;
 }
 .pos {
   flex: 1;
@@ -35,7 +32,7 @@ body {
   border-right: 1px solid white;
 }
 .pos.barEnd {
-  border-right: 1px solid #617280;
+  border-right: 2px solid #445d77;
 }
 .noteRow {
   display: flex;
@@ -68,16 +65,13 @@ body {
 .pos:last-of-type {
   border-right: 1px solid #36434f;
 }
-#noteGrid {
-  overflow-y: scroll;
-  background: #36434f;
-  border: 1em solid #36434f;
-  border-right: none; border-left: none;
+.noteGrid {
+  margin: 0;
 }
 #options {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 5em;
+  margin: 0;
   background: rgba(0,0,0,0.3);
   padding: .5em;
 }
@@ -85,7 +79,7 @@ button {
   background: #465767;
   color: white;
   border: none;
-  padding: 1.4em 1.8em 1.5em 1.8em;
+  padding: 1em 1.4em 1.1em 1.4em;
   margin-right: .5em;
   text-transform: uppercase;
   letter-spacing: .07em;
@@ -124,4 +118,10 @@ button#play.playing {
   45% {background: #498645}
   65% {background: #498645}
   100% {background: #465767}
+}
+
+#bottom-nav {
+  a {
+    margin: 2em 3em;
+  }
 }

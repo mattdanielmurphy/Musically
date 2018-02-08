@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import MusicList from '../MusicList';
 import NavBar from '../NavBar';
 import SingleCollection from '../SingleCollection';
+import '../users.css'
+import '../App.css'
 
 class Home extends React.Component {
   constructor(props){
@@ -28,40 +30,32 @@ class Home extends React.Component {
     }
   }
 
-
-
   render() {
     console.log('systemMusicFiles:', this.props.systemMusicFiles)
     if(!this.props.currentUser){
       return (
-        <div className="Home">
-          <h1>Users</h1>
-          {this.props.users.map(user =>
-              <div key={user.id}>{user.username}</div>
-          )}
-          <MusicList systemMusicFiles={this.props.systemMusicFiles} />
+        <article className="wrapper">
+          <h1>Welcome to Musically!</h1>
+          <p className="welcome">With Musically, you can create your very own music. Click on the grid to add a note. Click and drag to add a note with duration. Then click play and hear the magic!</p>
           <footer>
-            <Link to="/instrument">instrument</Link>
-            <br />
-            <Link to="/composeGrid">Compose Songs</Link>
+            {/*<Link to="/instrument">instrument</Link>*/}
+            <Link to="/composeGrid">Compose a Song</Link>
           </footer>
-        </div>
+        </article>
       )
     } else {
       return(
-        <div className='personalProfile'>
+        <article className='wrapper'>
           <h1>Welcome, {this.props.currentUser.username}. This your Music Space</h1>
           {this.state.userCollection.map((item) => {
-
             return <SingleCollection key={item.id} item={item} setCollectionId={this.setCollectionId.bind(this)} />
-
           })}
           <footer>
             <Link to="/instrument">instrument</Link>
             <br />
             <Link to="/composeGrid">Compose Songs</Link>
           </footer>
-        </div>
+        </article>
       )
     }
   }

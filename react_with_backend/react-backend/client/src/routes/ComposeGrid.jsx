@@ -39,7 +39,10 @@ class ComposeGrid extends React.Component {
     let note = null
     let song = this.state.song
     let currentPos = song[pos - 1]
-
+    let highlight = false
+    if (this.state.highlight == pos) {
+      highlight = true
+    }
     // if position exists in song
     if (currentPos) {
 
@@ -51,7 +54,8 @@ class ComposeGrid extends React.Component {
       }
     }
     return classNames({
-      'note': note
+      note,
+      highlight
     })
   }
 
@@ -179,9 +183,18 @@ class ComposeGrid extends React.Component {
     this.scheduleNotes()
   }
 
-  triggerNote(noteValue, duration, time) {
+  triggerNote(noteValue, duration, time, pos = null) {
     Tone.Transport.schedule(time => {
-      this.state.synth.triggerAttackRelease(noteValue, duration, time)
+      console.log('transport')
+      console.log(pos)
+      if (pos) {
+        Tone.Draw.schedule(() => {
+          console.log('draw')
+          this.setState({highlight: [pos]})
+        }, time)
+      } else {
+        this.state.synth.triggerAttackRelease(noteValue, duration, time)
+      }
     }, time)
   }
 
@@ -191,9 +204,14 @@ class ComposeGrid extends React.Component {
     let gridBeats = this.state.gridBeats
     let gridBars = this.state.gridBars
 
+
     Tone.Transport.loopEnd = `(${gridBeats * gridBars} * ${baseNote})+0.01`
     Tone.Transport.loop = true
     Tone.Transport.cancel()
+
+    for (let n = 1; n <= (gridBeats * gridBars); n++) {
+      this.triggerNote('', baseNote, `${n} * ${baseNote}`, n)
+    }
     // console.log(song[0]['C4'])
     for (var noteStartPos = 0; noteStartPos < song.length; noteStartPos++) {
       for (let noteValue in song[noteStartPos]) {
@@ -211,7 +229,8 @@ class ComposeGrid extends React.Component {
   playSong() {
     if(this.props.currentTrack){
       this.setState({
-        song: this.props.currentTrack
+        song: this.props.currentTrack,
+        playing: true
       })
     }
     this.scheduleNotes()
@@ -220,6 +239,10 @@ class ComposeGrid extends React.Component {
 
   stopSong() {
     Tone.Transport.stop()
+    this.setState({
+      highlight: null,
+      playing: false
+    })
   }
 
   clearSong() {
@@ -228,7 +251,14 @@ class ComposeGrid extends React.Component {
     }
     let song = []
     Tone.Transport.cancel()
-    this.setState({song})
+    this.setState({song: [], highlight: null})
+  }
+
+  playing() {
+    let playing = this.state.playing
+    return classNames({
+      playing
+    })
   }
 
   handleSaveSong(event) {
@@ -267,7 +297,7 @@ class ComposeGrid extends React.Component {
         <div className="noteGrid">{this.generateGrid()}</div>
         <div id='options'>
           <button id='clear' onMouseDown={e => this.clearSong()}>Clear</button>
-          <button id='play' onClick={e => this.playSong()}>Play</button>
+          <button id='play' className={this.playing( )} onClick={e => this.playSong()}>Play</button>
           <button id='stop' onClick={e => this.stopSong()}>Stop</button>
           <form onSubmit={this.handleSubmit}>
             <label>
@@ -299,8 +329,6 @@ class ComposeGrid extends React.Component {
             <input id='release' type="number" value='1.0' step='0.1'>
           </div>*/}
         </div>
-        <Link to='/tracksList'>Back to Tracks List</Link>
-        <Link to='/'>Back to Home</Link>
       </div>
     )
   }

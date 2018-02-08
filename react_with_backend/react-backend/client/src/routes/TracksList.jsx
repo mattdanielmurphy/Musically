@@ -35,10 +35,10 @@ class TrackList extends React.Component {
 
   render(){
     return (
-      <div>
+      <article className='wrapper'>
         <h3>Tracks in Collection</h3>
         <div>{this.tracksListDisplay()}</div>
-      </div>
+      </article>
     )
   }
 

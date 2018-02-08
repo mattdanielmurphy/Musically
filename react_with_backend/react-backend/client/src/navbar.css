@@ -1,9 +1,31 @@
-.navbar {
-  background: #36434f;
-  height: 100px;
+nav {
+  background: black;
   left: 0;
-  padding: 0 10px;
-  position: fixed;
+  padding: 0 5em;
   right: 0;
   top: 0;
+}
+#navbarNav {
+  margin: 0;
+  text-align: center;
+  padding: 0;
+}
+.nav-item {
+  margin: 0 1em;
+  padding: 20px 0;
+  font-size: 1.5em;
+}
+.nav-link {
+  color: #4095e7;
+  transition: .2s ease;
+}
+.nav-link:hover {
+  text-decoration: none;
+  color: white;
+}
+.navbar-brand {
+  margin-top: -.2em;
+}
+.navbar-brand:hover {
+  border: none;
 }

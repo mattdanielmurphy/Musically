@@ -14,8 +14,7 @@ class SingleCollection extends React.Component {
       <div>
         <h1>Name: {this.props.item.name}</h1>
         <p>Description: {this.props.item.description}</p>
-        <button type='button' onClick={() => this.handleOnClick(this.props.item.id)}><Link to="/tracksList">View tracks in this Collection</Link></button>
-
+        <Link class='button' to="/tracksList"><button type='button' onClick={() => this.handleOnClick(this.props.item.id)}>View tracks in this Collection</button></Link>
       </div>
     )
   }
