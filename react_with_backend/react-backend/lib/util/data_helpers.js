@@ -26,6 +26,16 @@ module.exports = function dataQueries(knex) {
         })
         .returning('*');
     },
+    createNewTrack(name, song, userId, musicCollectionId){
+      return knex('tracks')
+        .insert({
+          'name': name,
+          'recorded_date': CURRENT_DATE,
+          'song': song,
+          'user_id': userId,
+          'music_collection_id': musicCollectionId
+        })
+    },
     getUserByLogin(email, password){
       return knex('users')
         .select()
@@ -53,6 +63,54 @@ module.exports = function dataQueries(knex) {
         .select()
         .where({
           'music_collection_id': id
+        })
+    },
+    findOrCreateMusicCollection(collection) {
+      return knex('music_collections')
+        .select('*')
+        .where({
+          'name': collection.name
+        })
+        .then((collection) => {
+          return new Promise((resolve, reject) => {
+            if (collection && collection.id) {
+              resolve(collection);
+            } else {
+              knex('music_collections')
+                .insert(collection)
+                .returning('*')
+                .then(res => {
+                  resolve(res)
+                })
+                .catch(err => {
+                  reject(err)
+                })
+            }
+          })
+        })
+    },
+    getMusicCollectionIdByName(name){
+      return knex('music_collections')
+        .select('id')
+        .where({
+          'name': name
+        })
+        .then(({id}) => {
+          return new Promise((resolve, reject) => {
+            if (id) {
+              resolve(id);
+            } else {
+              knex('music_collections')
+                .insert({name: name})
+                .returning('id')
+                .then(res => {
+                  resolve(res.id)
+                })
+                .catch(err => {
+                  reject(err)
+                })
+            }
+          })
         })
     }
   }
