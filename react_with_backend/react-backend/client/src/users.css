@@ -1,0 +1,12 @@
+h1 {
+  margin-top: 2em;
+}
+
+p.welcome {
+  max-width: 450px;
+  margin: 0 auto 2em auto;
+}
+
+a.button:hover {
+  border: none;
+}
