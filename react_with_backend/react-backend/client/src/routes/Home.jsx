@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MusicList from '../MusicList.js';
-import NavBar from '../NavBar.js';
+import NavBar from '../NavBar';
 import SingleCollection from '../SingleCollection.js';
 
 class Home extends React.Component {
