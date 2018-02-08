@@ -191,6 +191,11 @@ class ComposeGrid extends React.Component {
   }
 
   playSong() {
+    if(this.props.currentTrack){
+      this.setState({
+        song: this.props.currentTrack
+      })
+    }
     this.scheduleNotes()
     Tone.Transport.start()
   }
@@ -232,7 +237,7 @@ class ComposeGrid extends React.Component {
             <input id='release' type="number" value='1.0' step='0.1'>
           </div>*/}
         </div>
-
+        <Link to='/tracksList'>Back to Tracks List</Link>
         <Link to='/'>Back to Home</Link>
       </div>
     )

@@ -28,7 +28,7 @@ class App extends React.Component {
       users: [],
       currentUser: null,
       // userId: cookie.load('userId'),
-
+      currentTrack: [],
       currentCollectionId: null
 
     }
@@ -60,7 +60,17 @@ class App extends React.Component {
   // onLogout() {
   //   cookie.remove('userId', { path: '/' })
   // }
+  setUpCurrentTrack = (track) => {
+    this.setState({
+      currentTrack: track
+    })
+  }
 
+  clearCurrentTrack = () => {
+    this.setState({
+      currentTrack: []
+    })
+  }
 
   setUpCollectionId = (id) => {
     this.setState({
@@ -98,8 +108,8 @@ class App extends React.Component {
           <Switch>
             <Route path='/' exact render={ ({match, history, location}) => <Home users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} currentUser={this.state.currentUser} setUpCollectionId={this.setUpCollectionId.bind(this)} /> } />
             <Route path='/instrument' exact render={() => <PlayInstrument />} />
-            <Route path='/composegrid' exact render={() => <ComposeGrid />} />
-            <Route path='/trackslist' exact render={() => <TracksList currentCollectionId={this.state.currentCollectionId} /> } />
+            <Route path='/composegrid' exact render={(props) => <ComposeGrid {...props} currentTrack={this.state.currentTrack} clearCurrentTrack={this.clearCurrentTrack} />} />
+            <Route path='/trackslist' exact render={(props) => <TracksList {...props} currentCollectionId={this.state.currentCollectionId} setUpCurrentTrack={this.setUpCurrentTrack} /> } />
 
           </Switch>
         </div>

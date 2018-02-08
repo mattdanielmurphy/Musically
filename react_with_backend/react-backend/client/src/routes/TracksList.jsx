@@ -15,6 +15,11 @@ class TrackList extends React.Component {
     .then(tracks => this.setState({ tracks: tracks }))
   }
 
+  handleOnClick = (track,e) => {
+    this.props.setUpCurrentTrack(track)
+    this.props.history.push('/composeGrid')
+  }
+
   tracksListDisplay = () => {
     return this.state.tracks.map((track)=>{
         return(
@@ -22,7 +27,7 @@ class TrackList extends React.Component {
             <h3>Track Name: {track.name}</h3>
             <span>Created at {track.recorded_date}</span>
             <br />
-            <span>Track notes: {track.path}</span>
+            <button onClick={() => this.handleOnClick(track.song)}>Play in Grid</button>
           </div>
         )
       })
