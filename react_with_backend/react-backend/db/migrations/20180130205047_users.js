@@ -18,7 +18,7 @@ exports.up = function(knex, Promise) {
         table.string('name');
         table.increments('id');
         table.date('recorded_date');
-        table.string('path');
+        table.json('song');
         table.integer('music_collection_id')
         table.integer('user_id');
         table.unique(['user_id', 'music_collection_id'])
