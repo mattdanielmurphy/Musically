@@ -29,7 +29,7 @@ class App extends React.Component {
       currentUser: null,
       // userId: cookie.load('userId'),
       currentTrack: [],
-      currentCollectionId: null
+      currentCollectionId: null,
 
     }
   }
@@ -92,7 +92,7 @@ class App extends React.Component {
             <Switch>
               <Route path='/' exact render={ ({match, history, location}) => <Home currentUser={this.state.currentUser} users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} /> } />
               <Route path='/instrument' exact render={() => <PlayInstrument />} />
-              <Route path='/composegrid' exact render={()=><ComposeGrid />} />
+              <Route path='/composegrid' exact render={(props)=><ComposeGrid {...props} currentTrack={this.state.currentTrack} clearCurrentTrack={this.clearCurrentTrack} currentUser={this.state.currentUser} />} />
               <Route path='/signin' exact render={(props)=> <SignIn {...props} updateCurrentUser={this.updateCurrentUser} />} />
               <Route path='/register' exact render={(props)=> <Register {...props} updateCurrentUser={this.updateCurrentUser} />} />
             </Switch>
@@ -108,7 +108,7 @@ class App extends React.Component {
           <Switch>
             <Route path='/' exact render={ ({match, history, location}) => <Home users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} currentUser={this.state.currentUser} setUpCollectionId={this.setUpCollectionId.bind(this)} /> } />
             <Route path='/instrument' exact render={() => <PlayInstrument />} />
-            <Route path='/composegrid' exact render={(props) => <ComposeGrid {...props} currentTrack={this.state.currentTrack} clearCurrentTrack={this.clearCurrentTrack} />} />
+            <Route path='/composegrid' exact render={(props) => <ComposeGrid {...props} currentTrack={this.state.currentTrack} clearCurrentTrack={this.clearCurrentTrack} currentUser={this.state.currentUser} currentUserCollection={this.state.currentUserCollection} />} />
             <Route path='/trackslist' exact render={(props) => <TracksList {...props} currentCollectionId={this.state.currentCollectionId} setUpCurrentTrack={this.setUpCurrentTrack} /> } />
 
           </Switch>

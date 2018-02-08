@@ -17,7 +17,21 @@ class ComposeGrid extends React.Component {
       octaveRange: { min: 2, max: 4 },
       selectedInstrument: 'synthesizer',
       song: [],
-      synth: new Tone.PolySynth().toMaster()
+      synth: new Tone.PolySynth().toMaster(),
+      trackName: '',
+      collectionName: '',
+      userCollection:[]
+    }
+    this.handleChange = this.handleOnChange.bind(this);
+    this.handleSubmit = this.handleSaveSong.bind(this);
+  }
+
+  componentDidMount(){
+    if(this.props.currentUser){
+      let id = this.props.currentUser.id
+      fetch(`/users/usermusic/${id}`)
+      .then(res => res.json())
+      .then(usermusic => this.setState({ userCollection: usermusic }))
     }
   }
 
@@ -89,6 +103,10 @@ class ComposeGrid extends React.Component {
       })
     }
     return grid
+  }
+
+  handleOnChange = (key) => (event) => {
+    this.setState({[key]: event.target.value});
   }
 
   handleMouseDown(noteValue, pos, e) {
@@ -228,6 +246,10 @@ class ComposeGrid extends React.Component {
   }
 
   clearSong() {
+    if(this.props.currentTrack){
+      this.props.clearCurrentTrack()
+    }
+    let song = []
     Tone.Transport.cancel()
     this.setState({song: [], highlight: null})
   }
@@ -239,6 +261,36 @@ class ComposeGrid extends React.Component {
     })
   }
 
+  handleSaveSong(event) {
+    event.preventDefault();
+    let self = this;
+    let collectionName = self.state.collectionName;
+    let name = self.state.trackName;
+    let song = self.state.song;
+    let userId = self.props.currentUser.id
+    if(self.state.song.length > 0){
+      fetch('/users/composeGrid',{
+        method: 'POST',
+        body: JSON.stringify({
+          name: name,
+          song: song,
+          userId: userId,
+          collectionName: collectionName
+        }),
+        headers: {"Content-Type": "application/json"}
+      })
+    }
+  }
+
+  renderCollectionOptions() {
+    if(this.props.currentUser){
+      return this.state.userCollection.map(collection => (
+        <option key={collection.id} value={collection.id}>{collection.name}</option>
+      ))
+
+    }
+  }
+
   render() {
     return (
       <div>
@@ -247,6 +299,17 @@ class ComposeGrid extends React.Component {
           <button id='clear' onMouseDown={e => this.clearSong()}>Clear</button>
           <button id='play' className={this.playing( )} onClick={e => this.playSong()}>Play</button>
           <button id='stop' onClick={e => this.stopSong()}>Stop</button>
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Pick A Collection
+              <select value={this.state.collectionName} onChange={this.handleChange('collectionName')}>
+              { this.renderCollectionOptions() }
+              </select>
+            </label>
+            <label htmlFor='trackName'>Track Name</label>
+            <input type='text' onChange={this.handleChange('trackName')} />
+            <button type='submit'>Save</button>
+          </form>
           {/*<label for="instrument">Select Instrument:</label>
           <select name="instrument" id="instrument-selector">
             <option value="synthesizer">Synthesizer</option>
