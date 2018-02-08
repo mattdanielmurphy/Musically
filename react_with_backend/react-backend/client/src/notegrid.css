@@ -125,3 +125,9 @@ button#play.playing {
   65% {background: #498645}
   100% {background: #465767}
 }
+
+#bottom-nav {
+  a {
+    margin: 2em 3em;
+  }
+}

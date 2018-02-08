@@ -21,6 +21,7 @@ router.get('/', function(req, res, next) {
   // if(user){
   //   res.json(user)
   // } else {
+    console.log("test");
     DataHelpers.getAllUsers()
       .then((users) => {
         console.log(users)
