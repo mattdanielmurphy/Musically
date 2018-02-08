@@ -1,5 +1,5 @@
 import React from 'react';
-import PlayPaino from '../PlayPaino.js'
+import PlayPaino from '../PlayPaino'
 
 class PlayInstrument extends React.Component {
   render() {

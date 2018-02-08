@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import MusicList from '../MusicList.js';
+import MusicList from '../MusicList';
 import NavBar from '../NavBar';
-import SingleCollection from '../SingleCollection.js';
+import SingleCollection from '../SingleCollection';
 
 class Home extends React.Component {
   constructor(props){
