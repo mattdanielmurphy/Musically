@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NavBar from './NavBar.js';
+import NavBar from './NavBar';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import PlayInstrument from './routes/PlayInstrument';
 import ComposeGrid from './routes/ComposeGrid';
 import SignIn from './routes/SignIn';
 import Register from './routes/Register';
+import TracksList from './routes/TracksList';
 
 // import cookie from 'react-cookies';
 
@@ -22,8 +23,7 @@ class App extends React.Component {
       users: [],
       currentUser: null,
       // userId: cookie.load('userId'),
-      login: false,
-      register: false
+      currentCollectionId: null
     }
   }
 
@@ -54,6 +54,12 @@ class App extends React.Component {
   //   cookie.remove('userId', { path: '/' })
   // }
 
+  setUpCollectionId = (id) => {
+    this.setState({
+      currentCollectionId: id
+    })
+  }
+
   updateCurrentUser = (data) => {
     this.setState({currentUser: data })
   }
@@ -78,11 +84,12 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <div>
-          <NavBar currentUser={this.state.currentUser} updateCurrentUser={this.updateCurrentUser} onLogout={this.onLogout} />
+          <NavBar currentUser={this.state.currentUser} updateCurrentUser={this.updateCurrentUser} />
           <Switch>
-            <Route path='/' exact render={ ({match, history, location}) => <Home users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} currentUser={this.state.currentUser}/> } />
+            <Route path='/' exact render={ ({match, history, location}) => <Home users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} currentUser={this.state.currentUser} setUpCollectionId={this.setUpCollectionId.bind(this)} /> } />
             <Route path='/instrument' exact render={() => <PlayInstrument />} />
-            <Route path='/composegrid' exact render={()=><ComposeGrid />} />
+            <Route path='/composegrid' exact render={() => <ComposeGrid />} />
+            <Route path='/trackslist' exact render={() => <TracksList currentCollectionId={this.state.currentCollectionId} /> } />
           </Switch>
         </div>
       </BrowserRouter>
