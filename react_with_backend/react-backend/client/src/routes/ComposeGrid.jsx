@@ -16,20 +16,23 @@ class ComposeGrid extends React.Component {
       octaveRange: { min: 2, max: 4 },
       selectedInstrument: 'synthesizer',
       song: [],
-      synth: new Tone.PolySynth().toMaster(),
-      currentNote: {
-        startPos: 1,
-        endPos: 4,
-        noteValue: 'C4'
-      }
+      synth: new Tone.PolySynth().toMaster()
     }
   }
 
   getClassNames(pos, noteValue) {
-    let note = false
-    if (this.state.song[pos - 1]) {
-      if (this.state.song[pos - 1][noteValue]) {
+    let note = null
+    let song = this.state.song
+    let currentPos = song[pos - 1]
+
+    // if position exists in song
+    if (currentPos) {
+
+      // if position in song has a note
+      if (currentPos[noteValue]) {
         note = true
+      // } else if (currentPos['continue']) {
+        // note = true
       }
     }
     return classNames({
@@ -49,6 +52,7 @@ class ComposeGrid extends React.Component {
             className={`${this.getClassNames(pos, noteValue)} pos barEnd`}
             onMouseDown={e => this.handleMouseDown(noteValue, pos, e)}
             onMouseUp={e => this.handleMouseUp(noteValue, pos, e)}
+            onMouseOver={e => this.handleMouseOver(noteValue, pos, e)}
           />
         )
       } else {
@@ -57,6 +61,7 @@ class ComposeGrid extends React.Component {
             className={`${this.getClassNames(pos, noteValue)} pos`}
             onMouseDown={e => this.handleMouseDown(noteValue, pos, e)}
             onMouseUp={e => this.handleMouseUp(noteValue, pos, e)}
+            onMouseOver={e => this.handleMouseOver(noteValue, pos, e)}
           />
         )
       }
@@ -82,20 +87,20 @@ class ComposeGrid extends React.Component {
   }
 
   handleMouseDown(noteValue, pos, e) {
+    // only start note if not already a note in that position
     if (this.state.song[pos - 1]) {
-      if (this.state.song[pos - 1][noteValue]) {
-        // this.removeNote(noteValue, pos)
-      } else {
-        this.trackNoteDuration(noteValue, pos, e)
+      if (!this.state.song[pos - 1][noteValue]) {
+        this.startNote(noteValue, pos, e)
       }
     } else {
-      this.trackNoteDuration(noteValue, pos, e)
+      this.startNote(noteValue, pos, e)
     }
   }
 
   handleMouseUp(noteValue, pos, e) {
+    // remove note if one already present; otherwise end note
     if (this.state.song[pos - 1]) {
-      if (this.state.song[pos - 1][noteValue]) {
+      if (this.state.song[pos - 1][noteValue] && !this.state.currentNoteStartPos) {
         // console.log('remove note')
         this.removeNote(noteValue, pos)
       } else {
@@ -104,36 +109,51 @@ class ComposeGrid extends React.Component {
     } else {
       this.endNote(noteValue, pos)
     }
+    this.setState({currentNoteStartPos: null, currentNoteValue: null})
+  }
+
+  handleMouseOver(noteValue, pos, e) {
+    let startPos = this.state.currentNoteStartPos
+    let song = this.state.song
+    if (startPos && this.state.currentNoteValue == noteValue) {
+      if (song[pos - 1]) {
+        song[pos - 1][noteValue] = 'continue'
+      } else {
+        song[pos - 1] = { [noteValue]: 'continue'}
+      }
+      this.setState({ song })
+      this.endNote(noteValue, pos)
+    }
   }
 
   endNote(noteValue, endPos) {
     let startPos = this.state.currentNoteStartPos
-    this.saveNote(noteValue, startPos, endPos)
+    if (noteValue == this.state.currentNoteValue) {
+      this.saveNote(noteValue, startPos, endPos)
+    }
   }
 
-  trackNoteDuration(noteValue, pos, e) {
-    // console.log(e.mouseDown, e.mouseUp)
+  startNote(noteValue, pos, e) {
     let now = Tone.now() + 0.1
-    this.state.synth.triggerAttackRelease(noteValue, '4n', now)
+    this.state.synth.triggerAttackRelease(noteValue, '8n', now)
+
     let currentNoteStartPos = pos
-    this.setState({currentNoteStartPos})
+    let currentNoteValue = noteValue
+    this.setState({currentNoteStartPos, currentNoteValue})
   }
 
   saveNote(noteValue, startPos, endPos) {
     let song = this.state.song
-    let duration = endPos - startPos + 1
-
     if (typeof song[startPos - 1] !== 'object') {
       song[startPos - 1] = {}
     }
 
-    song[startPos - 1][noteValue] = duration
+    song[startPos - 1][noteValue] = endPos
     this.setState({song})
     this.scheduleNotes()
   }
 
   removeNote(noteValue, pos) {
-    console.log('remoing note')
     let song = this.state.song
     delete song[pos - 1][noteValue]
     this.setState({song})
@@ -156,10 +176,15 @@ class ComposeGrid extends React.Component {
     Tone.Transport.loop = true
     Tone.Transport.cancel()
     // console.log(song[0]['C4'])
-    for (var i = 0; i < song.length; i++) {
-      for (let noteValue in song[i]) {
-        let duration = `${song[i][noteValue]} * ${baseNote}`
-        this.triggerNote(noteValue, duration, `${i + 1} * ${baseNote}`)
+    for (var noteStartPos = 0; noteStartPos < song.length; noteStartPos++) {
+      for (let noteValue in song[noteStartPos]) {
+        let noteEndPos = song[noteStartPos][noteValue]
+        let duration = `${noteEndPos - noteStartPos} * ${baseNote}`
+        if (noteEndPos == 'continue') {
+          console.log(noteEndPos)
+        } else {
+          this.triggerNote(noteValue, duration, `${noteStartPos + 1} * ${baseNote}`)
+        }
       }
     }
   }
