@@ -8,6 +8,7 @@ class Home extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+
       userCollection: [],
       collectionId: null
     };
@@ -16,6 +17,7 @@ class Home extends React.Component {
   setCollectionId(id){
     this.props.setUpCollectionId(id)
   }
+
 
   componentDidMount(){
     if(this.props.currentUser){
@@ -50,7 +52,9 @@ class Home extends React.Component {
         <div className='personalProfile'>
           <h1>Welcome, {this.props.currentUser.username}. This your Music Space</h1>
           {this.state.userCollection.map((item) => {
+
             return <SingleCollection key={item.id} item={item} setCollectionId={this.setCollectionId.bind(this)} />
+
           })}
           <footer>
             <Link to="/instrument">instrument</Link>

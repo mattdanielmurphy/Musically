@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Tone from 'tone'
@@ -14,26 +13,23 @@ class ComposeGrid extends React.Component {
       baseNote: '4n',
       gridBeats: 4,
       gridBars: 4,
-      octaveRange: { min: 2, max: 4 },
+      octaveRange: { min: 4, max: 5 },
       selectedInstrument: 'synthesizer',
       song: [],
-      synth: new Tone.PolySynth().toMaster()
+      synth: new Tone.PolySynth().toMaster(),
+      currentNote: {
+        startPos: 1,
+        endPos: 4,
+        noteValue: 'C4'
+      }
     }
   }
 
   getClassNames(pos, noteValue) {
-    let note = null
-    let song = this.state.song
-    let currentPos = song[pos - 1]
-
-    // if position exists in song
-    if (currentPos) {
-
-      // if position in song has a note
-      if (currentPos[noteValue]) {
+    let note = false
+    if (this.state.song[pos - 1]) {
+      if (this.state.song[pos - 1][noteValue]) {
         note = true
-      // } else if (currentPos['continue']) {
-        // note = true
       }
     }
     return classNames({
@@ -53,7 +49,6 @@ class ComposeGrid extends React.Component {
             className={`${this.getClassNames(pos, noteValue)} pos barEnd`}
             onMouseDown={e => this.handleMouseDown(noteValue, pos, e)}
             onMouseUp={e => this.handleMouseUp(noteValue, pos, e)}
-            onMouseOver={e => this.handleMouseOver(noteValue, pos, e)}
           />
         )
       } else {
@@ -62,7 +57,6 @@ class ComposeGrid extends React.Component {
             className={`${this.getClassNames(pos, noteValue)} pos`}
             onMouseDown={e => this.handleMouseDown(noteValue, pos, e)}
             onMouseUp={e => this.handleMouseUp(noteValue, pos, e)}
-            onMouseOver={e => this.handleMouseOver(noteValue, pos, e)}
           />
         )
       }
@@ -74,7 +68,7 @@ class ComposeGrid extends React.Component {
     let grid = []
     let gridRows = []
     let octaveRange = this.state.octaveRange
-    for (let octave = octaveRange.max; octave >= octaveRange.min; octave--) {
+    for (let octave = octaveRange.min; octave <= octaveRange.max; octave++) {
       this.state.noteSequence.forEach( (note, index) => {
         grid.push(
           <div className='noteRow' noteValue={`${note}${octave}`}>
@@ -88,20 +82,20 @@ class ComposeGrid extends React.Component {
   }
 
   handleMouseDown(noteValue, pos, e) {
-    // only start note if not already a note in that position
     if (this.state.song[pos - 1]) {
-      if (!this.state.song[pos - 1][noteValue]) {
-        this.startNote(noteValue, pos, e)
+      if (this.state.song[pos - 1][noteValue]) {
+        // this.removeNote(noteValue, pos)
+      } else {
+        this.trackNoteDuration(noteValue, pos, e)
       }
     } else {
-      this.startNote(noteValue, pos, e)
+      this.trackNoteDuration(noteValue, pos, e)
     }
   }
 
   handleMouseUp(noteValue, pos, e) {
-    // remove note if one already present; otherwise end note
     if (this.state.song[pos - 1]) {
-      if (this.state.song[pos - 1][noteValue] && !this.state.currentNoteStartPos) {
+      if (this.state.song[pos - 1][noteValue]) {
         // console.log('remove note')
         this.removeNote(noteValue, pos)
       } else {
@@ -110,51 +104,36 @@ class ComposeGrid extends React.Component {
     } else {
       this.endNote(noteValue, pos)
     }
-    this.setState({currentNoteStartPos: null, currentNoteValue: null})
-  }
-
-  handleMouseOver(noteValue, pos, e) {
-    let startPos = this.state.currentNoteStartPos
-    let song = this.state.song
-    if (startPos && this.state.currentNoteValue == noteValue) {
-      if (song[pos - 1]) {
-        song[pos - 1][noteValue] = 'continue'
-      } else {
-        song[pos - 1] = { [noteValue]: 'continue'}
-      }
-      this.setState({ song })
-      this.endNote(noteValue, pos)
-    }
   }
 
   endNote(noteValue, endPos) {
     let startPos = this.state.currentNoteStartPos
-    if (noteValue == this.state.currentNoteValue) {
-      this.saveNote(noteValue, startPos, endPos)
-    }
+    this.saveNote(noteValue, startPos, endPos)
   }
 
-  startNote(noteValue, pos, e) {
+  trackNoteDuration(noteValue, pos, e) {
+    // console.log(e.mouseDown, e.mouseUp)
     let now = Tone.now() + 0.1
-    this.state.synth.triggerAttackRelease(noteValue, '8n', now)
-
+    this.state.synth.triggerAttackRelease(noteValue, '4n', now)
     let currentNoteStartPos = pos
-    let currentNoteValue = noteValue
-    this.setState({currentNoteStartPos, currentNoteValue})
+    this.setState({currentNoteStartPos})
   }
 
   saveNote(noteValue, startPos, endPos) {
     let song = this.state.song
+    let duration = endPos - startPos + 1
+
     if (typeof song[startPos - 1] !== 'object') {
       song[startPos - 1] = {}
     }
 
-    song[startPos - 1][noteValue] = endPos
+    song[startPos - 1][noteValue] = duration
     this.setState({song})
     this.scheduleNotes()
   }
 
   removeNote(noteValue, pos) {
+    console.log('remoing note')
     let song = this.state.song
     delete song[pos - 1][noteValue]
     this.setState({song})
@@ -177,15 +156,10 @@ class ComposeGrid extends React.Component {
     Tone.Transport.loop = true
     Tone.Transport.cancel()
     // console.log(song[0]['C4'])
-    for (var noteStartPos = 0; noteStartPos < song.length; noteStartPos++) {
-      for (let noteValue in song[noteStartPos]) {
-        let noteEndPos = song[noteStartPos][noteValue]
-        let duration = `${noteEndPos - noteStartPos} * ${baseNote}`
-        if (noteEndPos == 'continue') {
-          console.log(noteEndPos)
-        } else {
-          this.triggerNote(noteValue, duration, `${noteStartPos + 1} * ${baseNote}`)
-        }
+    for (var i = 0; i < song.length; i++) {
+      for (let noteValue in song[i]) {
+        let duration = `${song[i][noteValue]} * ${baseNote}`
+        this.triggerNote(noteValue, duration, `${i + 1} * ${baseNote}`)
       }
     }
   }
@@ -232,7 +206,6 @@ class ComposeGrid extends React.Component {
             <input id='release' type="number" value='1.0' step='0.1'>
           </div>*/}
         </div>
-
         <Link to='/'>Back to Home</Link>
       </div>
     )
