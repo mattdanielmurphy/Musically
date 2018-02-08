@@ -1,15 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import MusicList from '../MusicList.js';
-import NavBar from '../NavBar.js';
-import SingleCollection from '../SingleCollection.js';
+import MusicList from '../MusicList';
+import NavBar from '../NavBar';
+import SingleCollection from '../SingleCollection';
 
 class Home extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      userCollection: []
+      userCollection: [],
+      collectionId: null
     };
+  }
+
+  setCollectionId(id){
+    this.props.setUpCollectionId(id)
   }
 
   componentDidMount(){
@@ -45,7 +50,7 @@ class Home extends React.Component {
         <div className='personalProfile'>
           <h1>Welcome, {this.props.currentUser.username}. This your Music Space</h1>
           {this.state.userCollection.map((item) => {
-            return <SingleCollection key={item.id} item={item} />
+            return <SingleCollection key={item.id} item={item} setCollectionId={this.setCollectionId.bind(this)} />
           })}
           <footer>
             <Link to="/instrument">instrument</Link>
@@ -58,3 +63,5 @@ class Home extends React.Component {
   }
 }
 export default Home;
+
+

@@ -1,5 +1,5 @@
 import React from 'react';
-import Music from './Music.js'
+import Music from './Music'
 import Tone from 'tone';
 import * as MidiConvert from 'midiconvert'
 
