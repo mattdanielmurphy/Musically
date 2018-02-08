@@ -1,4 +1,5 @@
-import React from 'react';
+import React from 'react'
+import '../signin.css'
 
 
 class SignIn extends React.Component {
@@ -42,14 +43,16 @@ class SignIn extends React.Component {
   render(){
     return (
 
-      <form className='form-signin' onSubmit={this.handleSubmit}>
-        <h2 className='form-signin-heading'>Please sign in</h2>
-        <label htmlFor='inputEmail' className='sr-only'>Email address</label>
-        <input type='email' id='inputEmail' className='form-control' placeholder='Email address' onChange={this.handleChange('email')} required autoFocus />
-        <label htmlFor='inputPassword' className='sr-only'>Password</label>
-        <input type='password' id='inputPassword' className='form-control' placeholder='Password' onChange={this.handleChange('password')} required />
-        <button className='btn btn-lg btn-primary btn-block' type='submit'>Sign In</button>
-      </form>
+      <article className="wrapper">
+        <form className='form' onSubmit={this.handleSubmit}>
+          <h2 className='form-signin-heading'>Sign in</h2>
+          <label htmlFor='inputEmail' className='sr-only'>Email address</label>
+          <input type='email' id='inputEmail' className='form-control' placeholder='Email address' onChange={this.handleChange('email')} required autoFocus />
+          <label htmlFor='inputPassword' className='sr-only'>Password</label>
+          <input type='password' id='inputPassword' className='form-control' placeholder='Password' onChange={this.handleChange('password')} required />
+          <button className='btn btn-lg btn-primary btn-block' type='submit'>Sign In</button>
+        </form>
+      </article>
 
     )
   }

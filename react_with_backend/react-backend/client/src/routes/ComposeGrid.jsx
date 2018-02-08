@@ -17,8 +17,7 @@ class ComposeGrid extends React.Component {
       octaveRange: { min: 2, max: 4 },
       selectedInstrument: 'synthesizer',
       song: [],
-      synth: new Tone.PolySynth().toMaster(),
-      highlight: 1
+      synth: new Tone.PolySynth().toMaster()
     }
   }
 
@@ -223,15 +222,14 @@ class ComposeGrid extends React.Component {
   stopSong() {
     Tone.Transport.stop()
     this.setState({
-      highlight: 1,
+      highlight: null,
       playing: false
     })
   }
 
   clearSong() {
-    let song = []
     Tone.Transport.cancel()
-    this.setState({song})
+    this.setState({song: [], highlight: null})
   }
 
   playing() {
@@ -267,10 +265,6 @@ class ComposeGrid extends React.Component {
             <label for="release">release</label>
             <input id='release' type="number" value='1.0' step='0.1'>
           </div>*/}
-        </div>
-        <div id="bottom-nav">
-          <Link to='/tracksList'>Back to Tracks List</Link>
-          <Link to='/'>Back to Home</Link>
         </div>
       </div>
     )

@@ -1,14 +1,17 @@
-.App {
-  text-align: center;
+article.wrapper {
+  margin: 4em auto;
+  max-width: 30em;
 }
 
-.navbar {
-  background: #000;
-  border-bottom: 1px solid black;
-  height: 75px;
-  left: 0;
-  padding: 0 10px;
-  position: fixed;
-  right: 0;
-  top: 0;
+a {
+  color: #4095e7;
+  transition: .2s ease;
+  border-bottom: 1px solid transparent;
+  padding-bottom: .3em;
+}
+
+a:hover {
+  text-decoration: none;
+  color: white;
+  border-bottom: 1px solid #4095e7;
 }

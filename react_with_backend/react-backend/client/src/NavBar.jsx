@@ -17,8 +17,10 @@ class NavBar extends Component {
     if(this.props.currentUser){
       return(
         <nav>
-          <a href='/' className='navbar-brand'>Musically</a>
-          <div className='collapse navbar-collapse' id="navbarNav">
+          <a href='/' className='navbar-brand'>
+            <img src='musically-logo.svg' height='50' width='80'/>
+          </a>
+          <div className='navbar' id="navbarNav">
             <ul>
               <li className='nav-item'>
                 <a className='nav-link' href='/'>Home</a>
@@ -35,13 +37,11 @@ class NavBar extends Component {
       )
     } else {
       return(
-        <nav className='navbar navbar-toggleable-md navbar-light bg-faded' >
-
+        <nav>
           <a href='/' className='navbar-brand'>
             <img src='musically-logo.svg' height='50' width='80'/>
           </a>
-
-          <div className='collapse navbar-collapse' id='navbarNav'>
+          <div className='navbar' id='navbarNav'>
             <ul className='navbar-nav'>
               <li className='nav-item'>
                 <a className='nav-link' href='/'>Home</a>
@@ -51,6 +51,9 @@ class NavBar extends Component {
               </li>
               <li className='nav-item'>
                 <a className='nav-link' href='/register'>Register</a>
+              </li>
+              <li className="nav-item">
+                <a href="/composeGrid" className="nav-link">Compose</a>
               </li>
             </ul>
           </div>
