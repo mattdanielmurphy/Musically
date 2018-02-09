@@ -16,7 +16,7 @@ class ComposeGrid extends React.Component {
       gridBars: 4,
       octaveRange: { min: 2, max: 4 },
       selectedInstrument: 'synthesizer',
-      song: [],
+      song: this.props.currentTrack || [],
       synth: new Tone.PolySynth().toMaster(),
       trackName: '',
       collectionName: '',
@@ -24,6 +24,7 @@ class ComposeGrid extends React.Component {
     }
     this.handleChange = this.handleOnChange.bind(this);
     this.handleSubmit = this.handleSaveSong.bind(this);
+    new Tone.Filter(350, 'lowpass', -24).toMaster()
   }
 
   componentDidMount(){
@@ -38,6 +39,9 @@ class ComposeGrid extends React.Component {
   getClassNames(pos, noteValue) {
     let note = null
     let song = this.state.song
+    if (this.props.song) {
+      song = this.props.song
+    }
     let currentPos = song[pos - 1]
     let highlight = false
     if (this.state.highlight == pos) {
@@ -185,11 +189,8 @@ class ComposeGrid extends React.Component {
 
   triggerNote(noteValue, duration, time, pos = null) {
     Tone.Transport.schedule(time => {
-      console.log('transport')
-      console.log(pos)
       if (pos) {
         Tone.Draw.schedule(() => {
-          console.log('draw')
           this.setState({highlight: [pos]})
         }, time)
       } else {
@@ -203,7 +204,6 @@ class ComposeGrid extends React.Component {
     let baseNote = this.state.baseNote
     let gridBeats = this.state.gridBeats
     let gridBars = this.state.gridBars
-
 
     Tone.Transport.loopEnd = `(${gridBeats * gridBars} * ${baseNote})+0.01`
     Tone.Transport.loop = true
@@ -227,12 +227,8 @@ class ComposeGrid extends React.Component {
   }
 
   playSong() {
-    if(this.props.currentTrack){
-      this.setState({
-        song: this.props.currentTrack,
-        playing: true
-      })
-    }
+    this.setState({ playing: true })
+    console.log(this.state.song)
     this.scheduleNotes()
     Tone.Transport.start()
   }
@@ -299,17 +295,21 @@ class ComposeGrid extends React.Component {
           <button id='clear' onMouseDown={e => this.clearSong()}>Clear</button>
           <button id='play' className={this.playing( )} onClick={e => this.playSong()}>Play</button>
           <button id='stop' onClick={e => this.stopSong()}>Stop</button>
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              Pick A Collection
+          <button type='submit'>Save</button>
+          {/*<form id='save-loop' onSubmit={this.handleSubmit}>
+            <h2>Save loop:</h2>
+            <div>
+              <label>Collection</label>
               <select value={this.state.collectionName} onChange={this.handleChange('collectionName')}>
-              { this.renderCollectionOptions() }
+                { this.renderCollectionOptions() }
               </select>
-            </label>
-            <label htmlFor='trackName'>Track Name</label>
-            <input type='text' onChange={this.handleChange('trackName')} />
-            <button type='submit'>Save</button>
-          </form>
+            </div>
+            <div>
+              <label htmlFor='trackName'>Name</label>
+              <input type='text' onChange={this.handleChange('trackName')}/>
+              <button type='submit'>Save</button>
+            </div>
+          </form>*/}
           {/*<label for="instrument">Select Instrument:</label>
           <select name="instrument" id="instrument-selector">
             <option value="synthesizer">Synthesizer</option>

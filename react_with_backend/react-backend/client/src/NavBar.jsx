@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
 import './navbar.css'
-
+import {Link} from 'react-router-dom'
 
 class NavBar extends Component {
   constructor(props){
@@ -23,13 +23,16 @@ class NavBar extends Component {
           <div className='navbar' id="navbarNav">
             <ul>
               <li className='nav-item'>
-                <a className='nav-link' href='/'>Home</a>
+                <Link to='/' className='nav-link'>Home</Link>
               </li>
               <li className='nav-item'>
                 <p>Logged in as {this.props.currentUser && this.props.currentUser.username}</p>
               </li>
               <li className='nav-item'>
                 <a className='nav-link' onClick={this.handleLogout}>Logout</a>
+              </li>
+              <li className="nav-item">
+                <Link to="/composeGrid" className="nav-link">Compose</Link>
               </li>
             </ul>
           </div>
@@ -44,7 +47,7 @@ class NavBar extends Component {
           <div className='navbar' id='navbarNav'>
             <ul className='navbar-nav'>
               <li className='nav-item'>
-                <a className='nav-link' href='/'>Home</a>
+                <Link to='/' className='nav-link'>Home</Link>
               </li>
               <li className='nav-item'>
                 <a className='nav-link' href='/signin'>Sign In</a>

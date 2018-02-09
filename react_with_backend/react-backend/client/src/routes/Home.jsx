@@ -16,7 +16,7 @@ class Home extends React.Component {
     };
   }
 
-  setCollectionId(id){
+  setCollectionId(id) {
     this.props.setUpCollectionId(id)
   }
 
@@ -50,11 +50,6 @@ class Home extends React.Component {
           {this.state.userCollection.map((item) => {
             return <SingleCollection key={item.id} item={item} setCollectionId={this.setCollectionId.bind(this)} />
           })}
-          <footer>
-            <Link to="/instrument">instrument</Link>
-            <br />
-            <Link to="/composeGrid">Compose Songs</Link>
-          </footer>
         </article>
       )
     }

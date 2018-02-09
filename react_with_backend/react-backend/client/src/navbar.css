@@ -13,10 +13,11 @@ nav {
 .nav-item {
   margin: 0 1em;
   padding: 20px 0;
-  font-size: 1.5em;
+  font-size: 1.1em;
 }
 .nav-link {
   color: #4095e7;
+  margin: 0;
   transition: .2s ease;
 }
 .nav-link:hover {

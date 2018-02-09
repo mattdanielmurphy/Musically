@@ -120,6 +120,28 @@ button#play.playing {
   100% {background: #465767}
 }
 
+#save-loop h2 {
+  display: inline-block;
+  margin-left: .5em;
+}
+
+#save-loop div {
+  display: inline-block;
+  margin: 0 1em;
+}
+
+#save-loop input {
+  margin: 0 1em;
+  padding: .5em;
+  color: #22272c;
+}
+
+#save-loop select {
+  padding: .5em;
+  margin: 0 1em;
+  color: #22272c;
+}
+
 #bottom-nav {
   a {
     margin: 2em 3em;

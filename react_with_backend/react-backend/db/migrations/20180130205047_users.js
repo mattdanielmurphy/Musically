@@ -12,7 +12,6 @@ exports.up = function(knex, Promise) {
         table.integer('user_id');
         table.string('name');
         table.string('description');
-        table.unique('user_id')
       }),
       knex.schema.createTable('tracks', (table) => {
         table.string('name');
@@ -21,7 +20,6 @@ exports.up = function(knex, Promise) {
         table.json('song');
         table.integer('music_collection_id')
         table.integer('user_id');
-        table.unique(['user_id', 'music_collection_id'])
       })
   ]);
 
