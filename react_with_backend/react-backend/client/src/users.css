@@ -22,3 +22,16 @@ a.button:hover {
 .collection:hover {
   border-color: green;
 }
+
+button.addCollection {
+  padding: 0 10px;
+  font-size: 1.5em;
+  background-color: green;
+  border-radius: 10px
+}
+
+button.addCollection:hover {
+  background-color: green;
+  font-size: 1.7em;
+  color: blue;
+}

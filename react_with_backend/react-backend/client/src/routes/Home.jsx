@@ -50,6 +50,9 @@ class Home extends React.Component {
           <br />
           <h3>My Awesome collections</h3>
           <br />
+          <div>
+            <p>Add New Collection  <button className='addCollection'> + </button></p>
+          </div>
           {this.state.userCollection.map((item) => {
             return <SingleCollection key={item.id} item={item} setCollectionId={this.setCollectionId.bind(this)} />
           })}
