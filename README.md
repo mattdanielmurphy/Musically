@@ -8,7 +8,9 @@ Musically is an intuitive and easy way to create music loops in the browser that
 
 * Run node bin/www in react-backend folder terminal and run npm start in client folder terminal to start the frontend and backend servers, and now you can use website in localhost:3000.
 
-* Warning: Right now, if you have a new account, you must add a collection first, then you can save your loops or else it won't work. We will fix that vary soon.
+* Warning: Right now, if you have a new account, you must add a collection first, then you can save your loops or else it won't work. We will fix that vary soon. We have a previously setup account for you to experience the website functionalities.
+
+* setup account: email: matt@gmail.com password: pass.
 
 * Have fun.
 
