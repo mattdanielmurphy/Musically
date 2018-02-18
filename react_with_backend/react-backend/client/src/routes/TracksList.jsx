@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 
 class TrackList extends React.Component {
@@ -28,18 +29,29 @@ class TrackList extends React.Component {
             <span>Created at {track.recorded_date}</span>
             <br />
             <button onClick={() => this.handleOnClick(track.song)}>Play in Grid</button>
+            <button>Delete</button>
           </div>
         )
       })
   }
 
   render(){
-    return (
-      <article className='wrapper'>
-        <h3>Tracks in Collection</h3>
-        <div>{this.tracksListDisplay()}</div>
-      </article>
-    )
+    if(!this.props.currentCollectionId){
+      return(
+        <article className='wrapper'>
+          <h1>Opps! You did'nt pick a collection yet. Please pick one</h1>
+          <button><Link to='/'>Find out your Collection</Link></button>
+        </article>
+      )
+    } else {
+      return (
+        <article className='wrapper'>
+          <h3>Tracks in Collection</h3>
+          <div>{this.tracksListDisplay()}</div>
+        </article>
+      )
+
+    }
   }
 
 }

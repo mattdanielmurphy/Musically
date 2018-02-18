@@ -70,7 +70,10 @@ router.get('/tracks/:id', function(req, res, next){
 
 router.post('/composeGrid', function(req, res, next){
   let { name, song, userId, collectionName } = req.body;
-  console.log('id:',DataHelpers.getMusicCollectionIdByName(name))
+  console.log('song:', song);
+  DataHelpers.createNewTrack(name, song, userId, collectionName).then((newtrack) => {
+    res.json(newtrack)
+  })
   // DataHelpers.createNewTrack(name, song, userId, musicCollectionId).then((newtrack) =>{
   //   res.json(newtrack)
   // })

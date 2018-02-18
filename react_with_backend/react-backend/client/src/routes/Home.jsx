@@ -47,6 +47,9 @@ class Home extends React.Component {
       return(
         <article className='wrapper'>
           <h1>Welcome, {this.props.currentUser.username}. This your Music Space</h1>
+          <br />
+          <h3>My Awesome collections</h3>
+          <br />
           {this.state.userCollection.map((item) => {
             return <SingleCollection key={item.id} item={item} setCollectionId={this.setCollectionId.bind(this)} />
           })}

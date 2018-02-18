@@ -10,3 +10,15 @@ p.welcome {
 a.button:hover {
   border: none;
 }
+
+.collection {
+  border: solid white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  margin: 15px;
+}
+
+.collection:hover {
+  border-color: green;
+}

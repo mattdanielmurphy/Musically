@@ -275,6 +275,11 @@ class ComposeGrid extends React.Component {
         }),
         headers: {"Content-Type": "application/json"}
       })
+      .then(res => res.json())
+      .then(newtrack => {
+        console.log('newtrack:',newtrack[0])
+        self.props.history.push("/")
+      })
     }
   }
 
@@ -288,49 +293,64 @@ class ComposeGrid extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <div className="noteGrid">{this.generateGrid()}</div>
-        <div id='options'>
-          <button id='clear' onMouseDown={e => this.clearSong()}>Clear</button>
-          <button id='play' className={this.playing( )} onClick={e => this.playSong()}>Play</button>
-          <button id='stop' onClick={e => this.stopSong()}>Stop</button>
-          <button type='submit'>Save</button>
-          {/*<form id='save-loop' onSubmit={this.handleSubmit}>
-            <h2>Save loop:</h2>
-            <div>
-              <label>Collection</label>
-              <select value={this.state.collectionName} onChange={this.handleChange('collectionName')}>
-                { this.renderCollectionOptions() }
-              </select>
-            </div>
-            <div>
-              <label htmlFor='trackName'>Name</label>
-              <input type='text' onChange={this.handleChange('trackName')}/>
-              <button type='submit'>Save</button>
-            </div>
-          </form>*/}
-          {/*<label for="instrument">Select Instrument:</label>
-          <select name="instrument" id="instrument-selector">
-            <option value="synthesizer">Synthesizer</option>
-            <option value="drums" selected>Drum Kit</option>
-          </select>*/}
-          {/*<div id="envelope">
-            <label for="attack">attack</label>
-            <input id='attack' type="number" value='0.2' step='0.1'>
+    if(this.props.currentUser){
 
-            <label for="decay">decay</label>
-            <input id='decay' type="number" value='0.5' step='0.1'>
+      return (
+        <div>
+          <div className="noteGrid">{this.generateGrid()}</div>
+          <div id='options'>
+            <button id='clear' onMouseDown={e => this.clearSong()}>Clear</button>
+            <button id='play' className={this.playing( )} onClick={e => this.playSong()}>Play</button>
+            <button id='stop' onClick={e => this.stopSong()}>Stop</button>
+            <form id='save-loop' onSubmit={this.handleSubmit}>
+              <h2>Save loop:</h2>
+              <div>
+                <label>Collection</label>
+                <select value={this.state.collectionName} onChange={this.handleChange('collectionName')}>
+                  <option></option>
+                  { this.renderCollectionOptions() }
+                </select>
+              </div>
+              <div>
+                <label htmlFor='trackName'>Name</label>
+                <input type='text' onChange={this.handleChange('trackName')}/>
+                <button type='submit'>Save</button>
+                <button><Link to='/tracksList'>Back to collection</Link></button>
+              </div>
+            </form>
+            {/*<label for="instrument">Select Instrument:</label>
+            <select name="instrument" id="instrument-selector">
+              <option value="synthesizer">Synthesizer</option>
+              <option value="drums" selected>Drum Kit</option>
+            </select>*/}
+            {/*<div id="envelope">
+              <label for="attack">attack</label>
+              <input id='attack' type="number" value='0.2' step='0.1'>
 
-            <label for="sustain">sustain</label>
-            <input id='sustain' type="number" value='0.5' step='0.1'>
+              <label for="decay">decay</label>
+              <input id='decay' type="number" value='0.5' step='0.1'>
 
-            <label for="release">release</label>
-            <input id='release' type="number" value='1.0' step='0.1'>
-          </div>*/}
+              <label for="sustain">sustain</label>
+              <input id='sustain' type="number" value='0.5' step='0.1'>
+
+              <label for="release">release</label>
+              <input id='release' type="number" value='1.0' step='0.1'>
+            </div>*/}
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return(
+        <div>
+          <div className="noteGrid">{this.generateGrid()}</div>
+          <div id='options'>
+            <button id='clear' onMouseDown={e => this.clearSong()}>Clear</button>
+            <button id='play' className={this.playing( )} onClick={e => this.playSong()}>Play</button>
+            <button id='stop' onClick={e => this.stopSong()}>Stop</button>
+          </div>
+        </div>
+      )
+    }
   }
 }
 

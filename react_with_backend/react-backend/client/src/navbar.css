@@ -30,3 +30,16 @@ nav {
 .navbar-brand:hover {
   border: none;
 }
+
+button.logout {
+  background-color: black;
+  color: red;
+  height: 20px;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+button.logout:hover{
+  background-color: black;
+  font-size: 1.2em;
+}

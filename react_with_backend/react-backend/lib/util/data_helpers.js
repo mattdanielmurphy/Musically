@@ -26,15 +26,16 @@ module.exports = function dataQueries(knex) {
         })
         .returning('*');
     },
-    createNewTrack(name, song, userId, musicCollectionId){
+    createNewTrack(name, song, userId, collectionName){
       return knex('tracks')
         .insert({
           'name': name,
-          'recorded_date': CURRENT_DATE,
-          'song': song,
+          'recorded_date': new Date(),
+          'song': JSON.stringify(song),
           'user_id': userId,
-          'music_collection_id': musicCollectionId
+          'music_collection_id': collectionName
         })
+        .returning('*')
     },
     getUserByLogin(email, password){
       return knex('users')
@@ -94,23 +95,6 @@ module.exports = function dataQueries(knex) {
         .select('id')
         .where({
           'name': name
-        })
-        .then(({id}) => {
-          return new Promise((resolve, reject) => {
-            if (id) {
-              resolve(id);
-            } else {
-              knex('music_collections')
-                .insert({name: name})
-                .returning('id')
-                .then(res => {
-                  resolve(res.id)
-                })
-                .catch(err => {
-                  reject(err)
-                })
-            }
-          })
         })
     }
   }
