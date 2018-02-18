@@ -25,14 +25,14 @@ class NavBar extends Component {
               <li className='nav-item'>
                 <Link to='/' className='nav-link'>Home</Link>
               </li>
+              <li className="nav-item">
+                <Link to="/composeGrid" className="nav-link">Compose</Link>
+              </li>
               <li className='nav-item'>
                 <p>Logged in as {this.props.currentUser && this.props.currentUser.username}</p>
               </li>
               <li className='nav-item'>
-                <a className='nav-link' onClick={this.handleLogout}>Logout</a>
-              </li>
-              <li className="nav-item">
-                <Link to="/composeGrid" className="nav-link">Compose</Link>
+                <button className='logout' onClick={this.handleLogout}>Logout</button>
               </li>
             </ul>
           </div>
