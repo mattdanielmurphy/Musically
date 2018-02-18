@@ -275,6 +275,11 @@ class ComposeGrid extends React.Component {
         }),
         headers: {"Content-Type": "application/json"}
       })
+      .then(res => res.json())
+      .then(newtrack => {
+        console.log('newtrack:',newtrack[0])
+        self.props.history.push("/")
+      })
     }
   }
 
@@ -295,12 +300,13 @@ class ComposeGrid extends React.Component {
           <button id='clear' onMouseDown={e => this.clearSong()}>Clear</button>
           <button id='play' className={this.playing( )} onClick={e => this.playSong()}>Play</button>
           <button id='stop' onClick={e => this.stopSong()}>Stop</button>
-          <button type='submit'>Save</button>
-          {/*<form id='save-loop' onSubmit={this.handleSubmit}>
+          {/*<button type='submit'>Save</button>*/}
+          <form id='save-loop' onSubmit={this.handleSubmit}>
             <h2>Save loop:</h2>
             <div>
               <label>Collection</label>
               <select value={this.state.collectionName} onChange={this.handleChange('collectionName')}>
+                <option></option>
                 { this.renderCollectionOptions() }
               </select>
             </div>
@@ -309,7 +315,7 @@ class ComposeGrid extends React.Component {
               <input type='text' onChange={this.handleChange('trackName')}/>
               <button type='submit'>Save</button>
             </div>
-          </form>*/}
+          </form>
           {/*<label for="instrument">Select Instrument:</label>
           <select name="instrument" id="instrument-selector">
             <option value="synthesizer">Synthesizer</option>
