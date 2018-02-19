@@ -74,9 +74,14 @@ router.post('/composeGrid', function(req, res, next){
   DataHelpers.createNewTrack(name, song, userId, collectionName).then((newtrack) => {
     res.json(newtrack)
   })
-  // DataHelpers.createNewTrack(name, song, userId, musicCollectionId).then((newtrack) =>{
-  //   res.json(newtrack)
-  // })
+})
+
+router.post('/newCollection', function(req, res, next) {
+  let { userId, collectionName, description } = req.body;
+  DataHelpers.createNewCollection(userId, collectionName, description).then((newcollection) =>{
+    console.log('newcollection:', newcollection[0])
+    res.json(newcollection)
+  })
 })
 
 

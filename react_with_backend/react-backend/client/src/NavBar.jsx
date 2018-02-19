@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import './navbar.css'
 import {Link} from 'react-router-dom'
 
+
 class NavBar extends Component {
   constructor(props){
     super(props);
@@ -10,7 +11,6 @@ class NavBar extends Component {
 
   handleLogout = props => {
     this.props.updateCurrentUser(null);
-    this.props.history.push('/');
   }
 
   navbarDisplay = props => {

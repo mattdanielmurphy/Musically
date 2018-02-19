@@ -10,10 +10,10 @@ class Home extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-
       userCollection: [],
       collectionId: null
     };
+    this.handleClick = this.handleOnClick.bind(this);
   }
 
   setCollectionId(id) {
@@ -28,6 +28,10 @@ class Home extends React.Component {
       .then(res => res.json())
       .then(usermusic => this.setState({ userCollection: usermusic }))
     }
+  }
+
+  handleOnClick = event => {
+    this.props.history.push('/newcollection');
   }
 
   render() {
@@ -51,7 +55,7 @@ class Home extends React.Component {
           <h3>My Awesome collections</h3>
           <br />
           <div>
-            <p>Add New Collection  <button className='addCollection'> + </button></p>
+            <p>Add New Collection  <button onClick={this.handleClick} className='addCollection'> + </button></p>
           </div>
           {this.state.userCollection.map((item) => {
             return <SingleCollection key={item.id} item={item} setCollectionId={this.setCollectionId.bind(this)} />
