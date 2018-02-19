@@ -280,6 +280,8 @@ class ComposeGrid extends React.Component {
         console.log('newtrack:',newtrack[0])
         self.props.history.push("/")
       })
+    } else {
+      alert('Opps! Your Loop is empty, fill in something please.')
     }
   }
 

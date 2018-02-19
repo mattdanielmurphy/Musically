@@ -12,7 +12,7 @@ import PlayInstrument from './routes/PlayInstrument';
 import ComposeGrid from './routes/ComposeGrid';
 import SignIn from './routes/SignIn';
 import Register from './routes/Register';
-
+import NewCollection from './routes/NewCollection'
 import TracksList from './routes/TracksList';
 
 
@@ -36,9 +36,9 @@ class App extends React.Component {
 
 
   componentDidMount(){
-    fetch('/systemMusicFiles')
-    .then(res => res.json())
-    .then(systemMusicFiles => this.setState({systemMusicFiles: systemMusicFiles}))
+    // fetch('/systemMusicFiles')
+    // .then(res => res.json())
+    // .then(systemMusicFiles => this.setState({systemMusicFiles: systemMusicFiles}))
     fetch('/users')
     .then(res => res.json())
     .then(users => this.setState({ users: users }))
@@ -90,7 +90,7 @@ class App extends React.Component {
           <div>
             <NavBar currentUser={this.state.currentUser} updateCurrentUser={this.updateCurrentUser} />
             <Switch>
-              <Route path='/' exact render={ ({match, history, location}) => <Home currentUser={this.state.currentUser} users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} /> } />
+              <Route path='/' exact render={ (props) => <Home {...props} currentUser={this.state.currentUser} users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} /> } />
               <Route path='/instrument' exact render={() => <PlayInstrument />} />
               <Route path='/composegrid' exact render={(props)=><ComposeGrid {...props} currentTrack={this.state.currentTrack} clearCurrentTrack={this.clearCurrentTrack} currentUser={this.state.currentUser} />} />
               <Route path='/signin' exact render={(props)=> <SignIn {...props} updateCurrentUser={this.updateCurrentUser} />} />
@@ -106,10 +106,11 @@ class App extends React.Component {
 
           <NavBar currentUser={this.state.currentUser} updateCurrentUser={this.updateCurrentUser} />
           <Switch>
-            <Route path='/' exact render={ ({match, history, location}) => <Home users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} currentUser={this.state.currentUser} setUpCollectionId={this.setUpCollectionId.bind(this)} /> } />
+            <Route path='/' exact render={ (props) => <Home {...props} users={this.state.users} systemMusicFiles={this.state.systemMusicFiles} currentUser={this.state.currentUser} setUpCollectionId={this.setUpCollectionId.bind(this)} /> } />
             <Route path='/instrument' exact render={() => <PlayInstrument />} />
             <Route path='/composegrid' exact render={(props) => <ComposeGrid {...props} currentTrack={this.state.currentTrack} clearCurrentTrack={this.clearCurrentTrack} currentUser={this.state.currentUser} currentUserCollection={this.state.currentUserCollection} />} />
             <Route path='/trackslist' exact render={(props) => <TracksList {...props} currentCollectionId={this.state.currentCollectionId} setUpCurrentTrack={this.setUpCurrentTrack} /> } />
+            <Route path='/newcollection' exact render={(props)=> <NewCollection {...props} currentUser={this.state.currentUser} />} />
 
           </Switch>
         </div>

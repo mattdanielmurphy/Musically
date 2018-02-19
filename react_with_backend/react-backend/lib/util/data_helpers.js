@@ -37,6 +37,15 @@ module.exports = function dataQueries(knex) {
         })
         .returning('*')
     },
+    createNewCollection(userId, collectionName, description){
+      return knex('music_collections')
+        .insert({
+          'user_id': userId,
+          'name': collectionName,
+          'description': description
+        })
+        .returning('*')
+    },
     getUserByLogin(email, password){
       return knex('users')
         .select()
